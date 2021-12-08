@@ -1,5 +1,6 @@
 " by: h4rithd.com
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inoremap ii <Esc>       " remap Esc key to dubble i (ii)
 syntax on               " enable syntax processing
 set number              " show line numbers
 set relativenumber      " show relative numbering
