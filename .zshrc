@@ -207,16 +207,10 @@ fi
 
 #### ----------- Edit bt me!!
 
-## ---------- banner
+echo "▌│█║▌║▌║$(tput sgr 1)ｈ４ｒｉｔｈｄ．ｃｏｍ$(tput sgr 0)║▌║▌║█│▌"
 
-echo " _       ___      _ _   _         _                      ";
-echo "| |     /   |    (_) | | |       | |                     ";
-echo "| |__  / /| |_ __ _| |_| |__   __| |  ___ ___  _ __ ___  ";
-echo "| '_ \/ /_| | '__| | __| '_ \ / _\` | / __/ _ \| '_ \` _ \ ";
-echo "| | | \___  | |  | | |_| | | | (_| || (_| (_) | | | | | |";
-echo "|_| |_|   |_/_|  |_|\__|_| |_|\__,_(_)___\___/|_| |_| |_|";
-echo "                                                         ";
-echo "                                                         ";
+## First install cmatrix
+#cmatrix  -r -s # matrix banner
 
 scanall(){
     sudo nmap -n -Pn -vv --open -T4 -p- -oN AllPorts.nmap $1
@@ -227,15 +221,16 @@ scannow(){
     sudo nmap -sV -sC -Pn -oN DetailPorts.nmap -p $ports $1
 }
 
-export PATH="$PATH:/home/h4rleyq/.local/bin/"
+export PATH="$PATH:/home/${USER}/.local/bin/"
 
 alias ip="(echo -n 'IP : ' && curl ifconfig.ovh)"
-alias gvpn="globalprotect launch-ui"
 
-export ANDROID_HOME=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+## First setup this and then uncomment.
+#export ANDROID_HOME=$HOME/Android/Sdk
+#export PATH=$PATH:$ANDROID_HOME/emulator
+#export PATH=$PATH:$ANDROID_HOME/tools
+#export PATH=$PATH:$ANDROID_HOME/tools/bin
+#export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+## First install this and then uncomment 
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
