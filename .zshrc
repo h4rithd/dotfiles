@@ -224,6 +224,8 @@ scannow(){
 export PATH="$PATH:/home/${USER}/.local/bin/"
 
 alias ip="(echo -n 'IP : ' && curl ifconfig.ovh)"
+alias openvpn="sudo openvpn"
+alias dirsearch="dirsearch -r -f -o $(pwd)/dirsearch.out --format=plain --full-url"
 
 ## First setup this and then uncomment.
 #export ANDROID_HOME=$HOME/Android/Sdk
