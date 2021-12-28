@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get full-upgrade -y
+sudo apt-get dist-upgrade -y
+sudo apt-get clean -y
+sudo apt-get autoclean -y
+sudo apt-get autoremove -y
+sudo journalctl --vacuum-time=1d
+sudo rm -rf ~/.cache/thumbnails/*
+rm -r ~/.local/share/Trash/info/ && rm -r ~/.local/share/Trash/files/
+
+## Remove old kernels
+#sudo apt-get remove --purge $(dpkg -l 'linux-*' | sed '/^ii/!d;/'"$(uname -r | sed "s/\(.*\)-\([^0-9]\+\)/\1/")"'/d;s/^[^ ]* [^ ]* \([^ ]*\).*/\1/;/[0-9]/!d')
