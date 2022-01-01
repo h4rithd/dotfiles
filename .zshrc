@@ -261,6 +261,16 @@ export PATH=$PATH:${HOME}/.local/bin
 ## First install cmatrix
 #cmatrix  -r -s # matrix banner
 
+aip(){
+    aip=head -1 nmap/AllPorts.gnmap | awk '{print $NF}'
+    echo $aip
+}
+
+vip(){
+    vip=ifconfig tun0 | grep 'inet ' | awk '{print $2}'
+    echo $vip
+}
+
 scanall(){
     sudo nmap -n -Pn -vv --open -T4 -p- -oN AllPorts.nmap $1
 }
