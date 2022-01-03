@@ -252,7 +252,7 @@ if [ -f /etc/zsh_command_not_found ]; then
 fi
 
 
-#### ------------------ Edit by me 
+#   ====================================================( Edit by h4rithd.com )========================== 
 
 export PATH=$PATH:${HOME}/.local/bin
 
@@ -262,30 +262,30 @@ export PATH=$PATH:${HOME}/.local/bin
 #cmatrix  -r -s # matrix banner
 
 aip(){
-    aip=head -1 nmap/AllPorts.gnmap | awk '{print $NF}'
+    export aip=$(head -1 $(pwd)/nmap/AllPorts.gnmap | awk '{print $NF}')
     echo $aip
 }
 
-vip(){
-    vip=ifconfig tun0 | grep 'inet ' | awk '{print $2}'
-    echo $vip
+tun0(){
+    export tun0=$(ifconfig tun0 | grep 'inet ' | awk '{print $2}')
+    echo $tun0
 }
 
 scanall(){
-    sudo nmap -n -Pn -vv --open -T4 -p- -oN AllPorts.nmap $1
+    mkdir nmap
+    sudo nmap -n -Pn -vv --open -T4 -p- -oA nmap/AllPorts $1
 }
 
 scannow(){
-    ports=$(cat AllPorts.nmap | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
-    sudo nmap -sV -sC -Pn -oN DetailPorts.nmap -p $ports $1
+    ports=$(cat nmap/AllPorts.nmap | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
+    sudo nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports $1
 }
-
-export PATH="$PATH:/home/${USER}/.local/bin/"
 
 alias ip="(echo -n 'IP : ' && curl ifconfig.ovh)"
 alias openvpn="sudo openvpn"
 alias nmap="sudo nmap"
-alias pyserver="python3 -m http.server 80"
+alias pserver="python3 -m http.server 80"
+alias copy="DISPLAY=:0 xclip -sel clip"
 
 ## First setup this and then uncomment.
 #export ANDROID_HOME=$HOME/Android/Sdk
