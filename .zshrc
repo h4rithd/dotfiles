@@ -255,6 +255,7 @@ fi
 #   ====================================================( Edit by h4rithd.com )========================== 
 
 export PATH=$PATH:${HOME}/.local/bin
+export GIT_SSL_NO_VERIFY=1
 
 #echo "▌│█║▌║▌║$(tput sgr 1)ｈ４ｒｉｔｈｄ．ｃｏｍ$(tput sgr 0)║▌║▌║█│▌"
 
@@ -262,7 +263,7 @@ export PATH=$PATH:${HOME}/.local/bin
 #cmatrix  -r -s # matrix banner
 
 aip(){
-    export aip=$(head -1 $(pwd)/nmap/AllPorts.gnmap | awk '{print $NF}')
+    export aip=$1
     echo $aip
 }
 
@@ -271,28 +272,95 @@ tun0(){
     echo $tun0
 }
 
+tarex(){
+  if [ -f $1 ] ; then
+    case $1 in
+      *.Z)         uncompress $1;;
+      *.gz)        gunzip $1    ;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.zst)   unzstd $1    ;;      
+      *)           echo "'$1' cannot be extracted !" ;;
+    esac
+  else
+    echo "'$1' is not a valid file !"
+  fi
+}
+
+upnginx(){
+    mkdir -p /tmp/uploads
+    chmod 777 /tmp/uploads/
+    chown h4rithd:h4rithd /tmp/uploads/
+    sudo systemctl start nginx
+}
+
+pserver(){
+    clear 
+    echo "-------------------------" 
+    ls
+    echo "-------------------------"
+    echo ""
+    python3 -m http.server 80
+}
+
+nl(){
+    echo "--- Listen Port [4545] ---"
+    nc -lvnp 4545
+}
+
+nget(){
+    echo "--- Listen Port [1212] ---"
+    nc -lvnp 1212> $1
+}
+
 scanall(){
-    mkdir nmap
-    sudo nmap -n -Pn -vv --open -T4 -p- -oA nmap/AllPorts $1
+    [[ ! -d  nmap ]] && mkdir nmap
+    sudo grc nmap -n -Pn -vv --open -T4 -p- -oA nmap/AllPorts $1
 }
 
 scannow(){
     ports=$(cat nmap/AllPorts.nmap | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
-    sudo nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports $1
+    sudo grc nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports $1
 }
 
-alias ip="(echo -n 'IP : ' && curl ifconfig.ovh)"
+scanudpall(){
+    sudo grc nmap -n -Pn -vv --open -sU -p- -oA nmap/UDPAllPorts $1
+}
+
+scanudpfast(){
+    sudo grc nmap -n -Pn -vv --open -sU -F -oA nmap/UDPFastPorts $1
+}
+
+scanudpbest(){
+    sudo grc nmap -n -Pn -vv --open -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts $1
+}
+
+scandir(){
+    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o gobuster.txt $@
+}
+
+alias myip="(curl ifconfig.ovh)"
 alias openvpn="sudo openvpn"
-alias nmap="sudo nmap"
-alias pserver="python3 -m http.server 80"
+alias nmap="sudo grc nmap"
+alias msfconsole="sudo msfconsole"
 alias copy="DISPLAY=:0 xclip -sel clip"
+alias python="python2"
+alias wget="wget --no-check-certificate"
+alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
+alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
+alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
+alias wireshark="sudo wireshark"
+alias ffuf="ffuf -c -ic"
+alias wfuzz="wfuzz -c"
 
-## First setup this and then uncomment.
-#export ANDROID_HOME=$HOME/Android/Sdk
-#export PATH=$PATH:$ANDROID_HOME/emulator
-#export PATH=$PATH:$ANDROID_HOME/tools
-#export PATH=$PATH:$ANDROID_HOME/tools/bin
-#export PATH=$PATH:$ANDROID_HOME/platform-tools
-
-## First install this and then uncomment 
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
