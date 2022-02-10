@@ -252,9 +252,8 @@ if [ -f /etc/zsh_command_not_found ]; then
 fi
 
 
-#   ====================================================( Edit by h4rithd.com )========================== 
+#  ====================================================( Edit by h4rithd.com )========================== 
 
-export PATH=$PATH:${HOME}/.local/bin
 export GIT_SSL_NO_VERIFY=1
 
 #echo "▌│█║▌║▌║$(tput sgr 1)ｈ４ｒｉｔｈｄ．ｃｏｍ$(tput sgr 0)║▌║▌║█│▌"
@@ -356,6 +355,16 @@ scandir(){
 dirsearch(){
     [[ ! -d  fuzz ]] && mkdir fuzz
     python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.out --format=plain --full-url "$@"
+}
+
+ffuf(){
+    [[ ! -d  fuzz ]] && mkdir fuzz
+    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' $@ | tee fuzz/ffuf.out
+}
+
+wfuzz(){
+    [[ ! -d  fuzz ]] && mkdir fuzz
+    /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw $@
 }
 
 alias myip="(curl ifconfig.ovh)"
