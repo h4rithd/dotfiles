@@ -328,24 +328,34 @@ scanall(){
 }
 
 scannow(){
+    [[ ! -d  nmap ]] && echo 'First run scanall !'
     ports=$(cat nmap/AllPorts.nmap | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
     sudo grc nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports $1
 }
 
 scanudpall(){
+    [[ ! -d  nmap ]] && mkdir nmap
     sudo grc nmap -n -Pn -vv --open -sU -p- -oA nmap/UDPAllPorts $1
 }
 
 scanudpfast(){
+    [[ ! -d  nmap ]] && mkdir nmap
     sudo grc nmap -n -Pn -vv --open -sU -F -oA nmap/UDPFastPorts $1
 }
 
 scanudpbest(){
+    [[ ! -d  nmap ]] && mkdir nmap
     sudo grc nmap -n -Pn -vv --open -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts $1
 }
 
 scandir(){
-    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o gobuster.txt $@
+    [[ ! -d  fuzz ]] && mkdir fuzz
+    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt $@
+}
+
+dirsearch(){
+    [[ ! -d  fuzz ]] && mkdir fuzz
+    python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.out --format=plain --full-url "$@"
 }
 
 alias myip="(curl ifconfig.ovh)"
