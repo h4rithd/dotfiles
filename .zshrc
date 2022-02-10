@@ -252,7 +252,7 @@ if [ -f /etc/zsh_command_not_found ]; then
 fi
 
 
-#  ====================================================( Edit by h4rithd.com )========================== 
+# ====================================================( Edit by h4rithd.com )========================== 
 
 export GIT_SSL_NO_VERIFY=1
 
@@ -372,14 +372,12 @@ alias openvpn="sudo openvpn"
 alias nmap="sudo grc nmap"
 alias msfconsole="sudo msfconsole"
 alias copy="DISPLAY=:0 xclip -sel clip"
-alias python="python2"
+alias python="python3"
 alias wget="wget --no-check-certificate"
 alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias wireshark="sudo wireshark"
-alias ffuf="ffuf -c -ic"
-alias wfuzz="wfuzz -c"
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
