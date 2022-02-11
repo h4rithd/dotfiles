@@ -254,22 +254,15 @@ fi
 
 # ====================================================( Edit by h4rithd.com )========================== 
 
+export SUDO_PROMPT='Hey %p!, Give me the password 🔐: '
+export PATH="$HOME/.local/bin:$PATH"
 export GIT_SSL_NO_VERIFY=1
 
-#echo "▌│█║▌║▌║$(tput sgr 1)ｈ４ｒｉｔｈｄ．ｃｏｍ$(tput sgr 0)║▌║▌║█│▌"
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 
 ## First install cmatrix
 #cmatrix  -r -s # matrix banner
-
-aip(){
-    export aip=$1
-    echo $aip
-}
-
-tun0(){
-    export tun0=$(ifconfig tun0 | grep 'inet ' | awk '{print $2}')
-    echo $tun0
-}
 
 tarex(){
   if [ -f $1 ] ; then
@@ -378,6 +371,3 @@ alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias wireshark="sudo wireshark"
-
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-[[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
