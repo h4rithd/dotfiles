@@ -360,14 +360,15 @@ wfuzz(){
     /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw $@
 }
 
-alias myip="(curl ifconfig.ovh)"
-alias openvpn="sudo openvpn"
 alias nmap="sudo grc nmap"
-alias msfconsole="sudo msfconsole"
+alias openvpn="sudo openvpn"
+alias msfconsole="msfconsole"
+alias tb="nc termbin.com 9999"
+alias myip="(curl ifconfig.ovh)"
+alias wireshark="sudo wireshark"
 alias copy="DISPLAY=:0 xclip -sel clip"
-alias python="python3"
-alias wget="wget --no-check-certificate"
-alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
+alias wget="grc wget --no-check-certificate"
+alias gsize="du -hac --max-depth=1 | sort -h"
 alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
-alias wireshark="sudo wireshark"
+alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
