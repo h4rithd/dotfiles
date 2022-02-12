@@ -257,6 +257,7 @@ fi
 export SUDO_PROMPT='Hey %p!, Give me the password 🔐: '
 export PATH="$HOME/.local/bin:$PATH"
 export GIT_SSL_NO_VERIFY=1
+export PIP_DISABLE_PIP_VERSION_CHECK=1
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
