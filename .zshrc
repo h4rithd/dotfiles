@@ -371,8 +371,10 @@ wfuzz(){
     /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw "$@"
 }
 
+
 alias ccat="cat"
 alias pip="pip3"
+alias ps='ps auxf'
 alias bcat="batcat"
 alias nmap="sudo grc nmap"
 alias openvpn="sudo openvpn"
