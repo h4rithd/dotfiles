@@ -361,6 +361,9 @@ wfuzz(){
     /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw $@
 }
 
+alias ccat="cat"
+alias pip="pip3"
+alias bcat="batcat"
 alias nmap="sudo grc nmap"
 alias openvpn="sudo openvpn"
 alias msfconsole="msfconsole"
@@ -369,7 +372,8 @@ alias myip="(curl ifconfig.ovh)"
 alias wireshark="sudo wireshark"
 alias copy="DISPLAY=:0 xclip -sel clip"
 alias wget="grc wget --no-check-certificate"
-alias gsize="du -hac --max-depth=1 | sort -h"
 alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
+alias gsize="du -hac --max-depth=1 2>/dev/null | sort -h"
+alias cat="batcat --paging=never --style='plain' --theme=TwoDark"
