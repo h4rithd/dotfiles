@@ -378,7 +378,7 @@ alias ps='ps auxf'
 alias bcat="batcat"
 alias nmap="sudo grc nmap"
 alias tb="nc termbin.com 9999"
-alias myip="(curl ifconfig.ovh)"
+alias myip="curl ifconfig.ovh"
 alias wireshark="sudo wireshark"
 alias copy="DISPLAY=:0 xclip -sel clip"
 alias wget="grc wget --no-check-certificate"
