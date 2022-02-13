@@ -254,17 +254,19 @@ fi
 
 # ====================================================( Edit by h4rithd.com )========================== 
 
-## First install cmatrix
-#cmatrix  -r -s # matrix banner
+# sudo apt install cmatrix
+# cmatrix  -r -s # matrix banner
 
 export GIT_SSL_NO_VERIFY=1
 export PATH="$HOME/.local/bin:$PATH"
 export PIP_DISABLE_PIP_VERSION_CHECK=1
 export SUDO_PROMPT='[!] Give me the password 🔐: '
 
-#apt install source-highlight
-#export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
-#export LESS=' -R '
+if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
+    # sudo apt install source-highlight
+    export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+    export LESS=' -R '
+fi
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
@@ -294,7 +296,7 @@ tarex(){
 }
 
 openvpn(){
-    #apt-get instal wmctrl
+    # sudo apt install wmctrl
     [[ -f /usr/bin/wmctrl ]] && wmctrl -r "Terminal" -e 2,136,20,1699,963
     sudo /usr/sbin/openvpn "$@"
 }
