@@ -254,8 +254,8 @@ fi
 
 # ====================================================( Edit by h4rithd.com )========================== 
 
-# sudo apt install cmatrix
-# cmatrix  -r -s # matrix banner
+## First install cmatrix
+#cmatrix  -r -s # matrix banner
 
 export GIT_SSL_NO_VERIFY=1
 export PATH="$HOME/.local/bin:$PATH"
@@ -263,9 +263,9 @@ export PIP_DISABLE_PIP_VERSION_CHECK=1
 export SUDO_PROMPT='[!] Give me the password 🔐: '
 
 if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
-    # sudo apt install source-highlight
-    export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
-    export LESS=' -R '
+	#apt install source-highlight
+	export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+	export LESS=' -R '
 fi
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
@@ -296,7 +296,7 @@ tarex(){
 }
 
 openvpn(){
-    # sudo apt install wmctrl
+    #apt-get instal wmctrl
     [[ -f /usr/bin/wmctrl ]] && wmctrl -r "Terminal" -e 2,136,20,1699,963
     sudo /usr/sbin/openvpn "$@"
 }
@@ -328,38 +328,38 @@ nget(){
 
 scanall(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -T4 -p- -oA nmap/AllPorts "$@"
+    sudo grc nmap -n -Pn -vv --open -T4 -p- -oA nmap/AllPorts "$@" ; notify-send -i nmap 'TCP All Ports Scan' 'is finished!'
 }
 
 scannow(){
     [[ ! -d  nmap ]] && echo 'First run scanall !'
     ports=$(cat nmap/AllPorts.nmap | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
-    sudo grc nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports "$@"
+    sudo grc nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports "$@" ; notify-send -i nmap 'Script Scan' 'is finished!'
 }
 
 scanudpall(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -p- -oA nmap/UDPAllPorts "$@"
+    sudo grc nmap -n -Pn -vv --open -sU -p- -oA nmap/UDPAllPorts "$@" ; notify-send -i nmap 'UDP All Ports Scan' 'is finished!'
 }
 
 scanudpfast(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -F -oA nmap/UDPFastPorts "$@"
+    sudo grc nmap -n -Pn -vv --open -sU -F -oA nmap/UDPFastPorts "$@" ; notify-send -i nmap 'UDP Fast Scan' 'is finished!'
 }
 
 scanudpbest(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts "$@"
+    sudo grc nmap -n -Pn -vv --open -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts "$@" ; notify-send -i nmap 'Best UDP Scan' 'is finished!' 
 }
 
 scandir(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt "$@"
+    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt "$@" ; notify-send -i dirbuster 'Gobuster scan' 'is finished!'
 }
 
 dirsearch(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.out --format=plain --full-url "$@"
+    python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.out --format=plain --full-url "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
 }
 
 ffuf(){
@@ -369,7 +369,7 @@ ffuf(){
 
 wfuzz(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw "$@"
+    /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
 }
 
 alias ccat="cat"
@@ -377,7 +377,6 @@ alias pip="pip3"
 alias ps='ps auxf'
 alias bcat="batcat"
 alias nmap="sudo grc nmap"
-alias msfconsole="msfconsole"
 alias tb="nc termbin.com 9999"
 alias myip="(curl ifconfig.ovh)"
 alias wireshark="sudo wireshark"
@@ -388,3 +387,4 @@ alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias cat="batcat --style='plain' --theme=TwoDark"
 alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias gsize="du -hac --max-depth=1 2>/dev/null | sort -h"
+
