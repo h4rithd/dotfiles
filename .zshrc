@@ -254,10 +254,13 @@ fi
 
 # ====================================================( Edit by h4rithd.com )========================== 
 
-export SUDO_PROMPT='Hey %p!, Give me the password 🔐: '
-export PATH="$HOME/.local/bin:$PATH"
+## First install cmatrix
+#cmatrix  -r -s # matrix banner
+
 export GIT_SSL_NO_VERIFY=1
+export PATH="$HOME/.local/bin:$PATH"
 export PIP_DISABLE_PIP_VERSION_CHECK=1
+export SUDO_PROMPT='[!] Give me the password 🔐: '
 
 #apt install source-highlight
 #export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
@@ -265,9 +268,6 @@ export PIP_DISABLE_PIP_VERSION_CHECK=1
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
-
-## First install cmatrix
-#cmatrix  -r -s # matrix banner
 
 tarex(){
   if [ -f $1 ] ; then
@@ -310,7 +310,6 @@ pserver(){
     clear 
     echo "-------------------------" 
     ls
-    echo "-------------------------"
     echo ""
     python3 -m http.server 80
 }
@@ -371,13 +370,11 @@ wfuzz(){
     /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw "$@"
 }
 
-
 alias ccat="cat"
 alias pip="pip3"
 alias ps='ps auxf'
 alias bcat="batcat"
 alias nmap="sudo grc nmap"
-alias openvpn="sudo openvpn"
 alias msfconsole="msfconsole"
 alias tb="nc termbin.com 9999"
 alias myip="(curl ifconfig.ovh)"
@@ -389,4 +386,3 @@ alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias cat="batcat --style='plain' --theme=TwoDark"
 alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias gsize="du -hac --max-depth=1 2>/dev/null | sort -h"
-
