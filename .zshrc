@@ -259,6 +259,10 @@ export PATH="$HOME/.local/bin:$PATH"
 export GIT_SSL_NO_VERIFY=1
 export PIP_DISABLE_PIP_VERSION_CHECK=1
 
+#apt install source-highlight
+#export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+#export LESS=' -R '
+
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 
@@ -376,4 +380,4 @@ alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias gsize="du -hac --max-depth=1 2>/dev/null | sort -h"
-alias cat="batcat --paging=never --style='plain' --theme=TwoDark"
+alias cat="batcat --style='plain' --theme=TwoDark"
