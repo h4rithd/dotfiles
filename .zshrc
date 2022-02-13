@@ -293,6 +293,12 @@ tarex(){
   fi
 }
 
+openvpn(){
+    #apt-get instal wmctrl
+    [[ -f /usr/bin/wmctrl ]] && wmctrl -r "Terminal" -e 2,136,20,1699,963
+    sudo /usr/sbin/openvpn "$@"
+}
+
 upnginx(){
     mkdir -p /tmp/uploads
     chmod 777 /tmp/uploads/
@@ -321,33 +327,33 @@ nget(){
 
 scanall(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -T4 -p- -oA nmap/AllPorts $1
+    sudo grc nmap -n -Pn -vv --open -T4 -p- -oA nmap/AllPorts "$@"
 }
 
 scannow(){
     [[ ! -d  nmap ]] && echo 'First run scanall !'
     ports=$(cat nmap/AllPorts.nmap | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
-    sudo grc nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports $1
+    sudo grc nmap -sV -sC -Pn -oA nmap/DetailPorts -p $ports "$@"
 }
 
 scanudpall(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -p- -oA nmap/UDPAllPorts $1
+    sudo grc nmap -n -Pn -vv --open -sU -p- -oA nmap/UDPAllPorts "$@"
 }
 
 scanudpfast(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -F -oA nmap/UDPFastPorts $1
+    sudo grc nmap -n -Pn -vv --open -sU -F -oA nmap/UDPFastPorts "$@"
 }
 
 scanudpbest(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts $1
+    sudo grc nmap -n -Pn -vv --open -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts "$@"
 }
 
 scandir(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt $@
+    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt "$@"
 }
 
 dirsearch(){
@@ -357,12 +363,12 @@ dirsearch(){
 
 ffuf(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' $@ | tee fuzz/ffuf.out
+    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' "$@" | tee fuzz/ffuf.out
 }
 
 wfuzz(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw $@
+    /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw "$@"
 }
 
 alias ccat="cat"
@@ -378,6 +384,7 @@ alias copy="DISPLAY=:0 xclip -sel clip"
 alias wget="grc wget --no-check-certificate"
 alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
+alias cat="batcat --style='plain' --theme=TwoDark"
 alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias gsize="du -hac --max-depth=1 2>/dev/null | sort -h"
-alias cat="batcat --style='plain' --theme=TwoDark"
+
