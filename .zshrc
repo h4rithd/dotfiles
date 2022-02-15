@@ -253,15 +253,12 @@ fi
 
 
 # ====================================================( Edit by h4rithd.com )========================== 
-
-## First install cmatrix
+#sudo apt-get install cmatrix
 #cmatrix  -r -s # matrix banner
 
 export GIT_SSL_NO_VERIFY=1
 export PATH="$HOME/.local/bin:$PATH"
 export PIP_DISABLE_PIP_VERSION_CHECK=1
-export lpe="/opt/PrviEsc/LinPrviEsc/"
-export wpe="/opt/PrviEsc/WinPrviEsc/"
 export SUDO_PROMPT='[!] Give me the password 🔐: '
 export rockyou="/usr/share/wordlists/rockyou.txt"
 export mwords="/usr/share/seclists/Discovery/Web-Content/raft-medium-words.txt"
@@ -269,32 +266,32 @@ export mfiles="/usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt"
 export mlwords="/usr/share/seclists/Discovery/Web-Content/raft-medium-words-lowercase.txt"
 export mlfiles="/usr/share/seclists/Discovery/Web-Content/raft-medium-files-lowercase.txt"
 
-
 if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
-	# apt install source-highlight
+	# sudo apt-get install source-highlight
 	export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 	export LESS=' -R '
 fi
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+# sudo apt-get install grc
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 
-tarex(){
+extar(){
   if [ -f $1 ] ; then
     case $1 in
       *.Z)         uncompress $1;;
       *.gz)        gunzip $1    ;;
       *.7z)        7z x $1      ;;
       *.deb)       ar x $1      ;;
-      *.tgz)       tar xzf $1   ;;
+      *.tgz)       tar -xzf $1   ;;
       *.zip)       unzip $1     ;;
       *.bz2)       bunzip2 $1   ;;
       *.rar)       unrar x $1   ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tar.xz)    tar xf $1    ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.tar.bz2)   tar xjf $1   ;;
+      *.tar)       tar -xf $1    ;;
+      *.tbz2)      tar -xjf $1   ;;
+      *.tar.xz)    tar -xf $1    ;;
+      *.tar.gz)    tar -xzf $1   ;;
+      *.tar.bz2)   tar -xjf $1   ;;
       *.tar.zst)   unzstd $1    ;;      
       *)           echo "'$1' cannot be extracted !" ;;
     esac
@@ -304,7 +301,7 @@ tarex(){
 }
 
 openvpn(){
-    #apt-get instal wmctrl
+    # sudo apt-get install wmctrl
     [[ -f /usr/bin/wmctrl ]] && wmctrl -r "Terminal" -e 2,136,20,1699,963
     sudo /usr/sbin/openvpn "$@"
 }
@@ -321,6 +318,7 @@ pserver(){
     echo "-------------------------" 
     ls
     echo ""
+    ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' | xargs echo -n | DISPLAY=:0 xclip -sel clip
     python3 -m http.server 80
 }
 
@@ -377,7 +375,7 @@ dirsearch(){
 
 ffuf(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' "$@" | tee fuzz/ffuf.out
+    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' "$@" | tee fuzz/ffuf.out ; notify-send -i ffuf 'ffuf scan' 'is finished!'
 }
 
 wfuzz(){
@@ -394,10 +392,11 @@ alias tb="nc termbin.com 9999"
 alias myip="curl ifconfig.ovh"
 alias wireshark="sudo wireshark"
 alias copy="DISPLAY=:0 xclip -sel clip"
+alias lprv="cd /opt/PrviEsc/LinPrviEsc/"
+alias wprv="cd /opt/PrviEsc/WinPrviEsc/"
 alias wget="grc wget --no-check-certificate"
 alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias cat="batcat --style='plain' --theme=TwoDark"
 alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias gsize="du -hac --max-depth=1 2>/dev/null | sort -h"
-
