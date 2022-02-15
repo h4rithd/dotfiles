@@ -260,10 +260,18 @@ fi
 export GIT_SSL_NO_VERIFY=1
 export PATH="$HOME/.local/bin:$PATH"
 export PIP_DISABLE_PIP_VERSION_CHECK=1
+export lpe="/opt/PrviEsc/LinPrviEsc/"
+export wpe="/opt/PrviEsc/WinPrviEsc/"
 export SUDO_PROMPT='[!] Give me the password 🔐: '
+export rockyou="/usr/share/wordlists/rockyou.txt"
+export mwords="/usr/share/seclists/Discovery/Web-Content/raft-medium-words.txt"
+export mfiles="/usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt"
+export mlwords="/usr/share/seclists/Discovery/Web-Content/raft-medium-words-lowercase.txt"
+export mlfiles="/usr/share/seclists/Discovery/Web-Content/raft-medium-files-lowercase.txt"
+
 
 if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
-	#apt install source-highlight
+	# apt install source-highlight
 	export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 	export LESS=' -R '
 fi
@@ -316,14 +324,19 @@ pserver(){
     python3 -m http.server 80
 }
 
-nl(){
-    echo "--- Listen Port [4545] ---"
+ncl(){
+    echo "[command:] python -c \"import pty;pty.spawn('/bin/bash')\""
     nc -lvnp 4545
 }
 
 nget(){
-    echo "--- Listen Port [1212] ---"
-    nc -lvnp 1212> $1
+    echo "[command:] nc -lvnp 1212 > " $1
+    nc -lvnp 1212 > $1
+}
+
+sty(){
+    echo "[command:] export TERM=xterm;stty rows 45 cols 173" 
+    stty raw -echo; fg; echo "\n"; echo "\n"
 }
 
 scanall(){
