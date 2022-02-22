@@ -370,24 +370,24 @@ scandir(){
     grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt "$@" ; notify-send -i dirbuster 'Gobuster scan' 'is finished!'
 }
 
-dirsearch(){
+mdirsearch(){
     [[ ! -d  fuzz ]] && mkdir fuzz
     python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.out --format=plain --full-url "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
 }
 
-ffuf(){
+mffuf(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' "$@" | tee fuzz/ffuf.out ; notify-send -i ffuf 'ffuf scan' 'is finished!'
+    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -H 'Content-Type: application/x-www-form-urlencoded' "$@" | tee fuzz/ffuf.out ; notify-send -i ffuf 'ffuf scan' 'is finished!'
 }
 
-wfuzz(){
+mwfuzz(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/local/bin/wfuzz -c -f fuzz/wfuzz.out,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
+    /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -c -f fuzz/wfuzz.out,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
 }
 
 alias ccat="cat"
 alias pip="pip3"
-alias ps='ps auxf'
+alias ps="ps auxf"
 alias bcat="batcat"
 alias nmap="sudo grc nmap"
 alias tb="nc termbin.com 9999"
