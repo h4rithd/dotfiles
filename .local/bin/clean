@@ -2,14 +2,29 @@
 
 #-----[by h4rithd.com]
 
-sudo apt-get update -y
-sudo apt-get upgrade -y
-sudo apt-get full-upgrade -y
-sudo apt-get dist-upgrade -y
-sudo apt-get clean -y
-sudo apt-get autoclean -y
-sudo apt-get autoremove -y
-pip cache purge
-sudo rm -rf /tmp/*
-sudo rm -rf ~/.cache/thumbnails/*
-sudo journalctl --vacuum-time=1d
+if [[ "$1" == "cl" ]]
+then
+    sudo apt-get clean -y
+    sudo apt-get autoclean -y
+    sudo apt-get autoremove -y
+    sudo rm -rf /tmp/*
+    sudo rm -rf ~/.cache/thumbnails/*
+    sudo journalctl --vacuum-time=1d
+    sudo rm -rf /home/h4rithd/.config/Code/Cache/*
+    sudo rm -rf /home/h4rithd/.config/Code/CachedData/*
+    sudo rm -rf /home/h4rithd/.config/obsidian/Cache/*
+else 
+    sudo apt-get update -y
+    sudo apt-get upgrade -y
+    sudo apt-get full-upgrade -y
+    sudo apt-get dist-upgrade -y
+    sudo apt-get clean -y
+    sudo apt-get autoclean -y
+    sudo apt-get autoremove -y
+    sudo rm -rf /tmp/*
+    sudo rm -rf ~/.cache/thumbnails/*
+    sudo journalctl --vacuum-time=1d
+    sudo rm -rf /home/h4rithd/.config/Code/Cache/*
+    sudo rm -rf /home/h4rithd/.config/Code/CachedData/*
+    sudo rm -rf /home/h4rithd/.config/obsidian/Cache/*
+fi
