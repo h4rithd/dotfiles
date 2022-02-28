@@ -10,9 +10,9 @@ then
     sudo rm -rf /tmp/*
     sudo rm -rf ~/.cache/thumbnails/*
     sudo journalctl --vacuum-time=1d
-    sudo rm -rf /home/h4rithd/.config/Code/Cache/*
-    sudo rm -rf /home/h4rithd/.config/Code/CachedData/*
-    sudo rm -rf /home/h4rithd/.config/obsidian/Cache/*
+    sudo rm -rf /home/$USER/.config/Code/Cache/*
+    sudo rm -rf /home/$USER/.config/Code/CachedData/*
+    sudo rm -rf /home/$USER/.config/obsidian/Cache/*
 else 
     sudo apt-get update -y
     sudo apt-get upgrade -y
@@ -24,7 +24,7 @@ else
     sudo rm -rf /tmp/*
     sudo rm -rf ~/.cache/thumbnails/*
     sudo journalctl --vacuum-time=1d
-    sudo rm -rf /home/h4rithd/.config/Code/Cache/*
-    sudo rm -rf /home/h4rithd/.config/Code/CachedData/*
-    sudo rm -rf /home/h4rithd/.config/obsidian/Cache/*
+    sudo rm -rf /home/$USER/.config/Code/Cache/*
+    sudo rm -rf /home/$USER/.config/Code/CachedData/*
+    sudo rm -rf /home/$USER/.config/obsidian/Cache/*
 fi
