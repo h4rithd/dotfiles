@@ -33,7 +33,9 @@ filetype plugin on      " load filetype specific plugin files
 
 " https://github.com/lifepillar/vim-mucomplete.github
 set completeopt+=menuone
+set completeopt+=noselect
 let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 1
 
 set noerrorbells visualbell t_vb=	" Disable annoying error noises
 set backspace=indent,eol,start		" Make backspace behave in a more intuitive way
