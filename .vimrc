@@ -6,10 +6,10 @@ set number              " show line numbers
 set relativenumber      " show relative numbering
 set showcmd             " show command in bottom bar
 set cursorline          " highlight current line
-set incsearch			" search as characters are entered
-set hlsearch			" highlight matches
-set ignorecase			" Ignore case in searches by default
-set smartcase			" But make it case sensitive if an uppercase is entered
+set incsearch     			" search as characters are entered
+set hlsearch      			" highlight matches
+set ignorecase    			" Ignore case in searches by default
+set smartcase	      		" But make it case sensitive if an uppercase is entered
 set tabstop=4           " number of visual spaces per TAB
 set softtabstop=4       " number of spaces in tab when editing
 set shiftwidth=4        " Insert 4 spaces on a tab
@@ -31,16 +31,15 @@ set undodir=~/.vim/undodir
 filetype indent on      " load filetype-specific indent files
 filetype plugin on      " load filetype specific plugin files
 
-" -----[Plugins]------
-" [+] OneDark
+" [-] onedark Plugin
 packadd! onedark.vim
 colorscheme onedark
-" [+] vim-mucomplete
+" [-] vim-mucomplete plugin
 set completeopt+=menuone
 set completeopt+=noselect
 let g:mucomplete#enable_auto_at_startup = 1
 let g:mucomplete#completion_delay = 1
-" [+] highlightedyank
+" [-] highlightedyank plugin
 let g:highlightedyank_highlight_duration = -1
 
 set noerrorbells visualbell t_vb=	" Disable annoying error noises
