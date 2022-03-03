@@ -31,11 +31,17 @@ set undodir=~/.vim/undodir
 filetype indent on      " load filetype-specific indent files
 filetype plugin on      " load filetype specific plugin files
 
-" https://github.com/lifepillar/vim-mucomplete.github
+" -----[Plugins]------
+" [+] OneDark
+packadd! onedark.vim
+colorscheme onedark
+" [+] vim-mucomplete
 set completeopt+=menuone
 set completeopt+=noselect
 let g:mucomplete#enable_auto_at_startup = 1
 let g:mucomplete#completion_delay = 1
+" [+] highlightedyank
+let g:highlightedyank_highlight_duration = -1
 
 set noerrorbells visualbell t_vb=	" Disable annoying error noises
 set backspace=indent,eol,start		" Make backspace behave in a more intuitive way
@@ -43,7 +49,6 @@ set backspace=indent,eol,start		" Make backspace behave in a more intuitive way
 set colorcolumn=120
 highlight ColorColumn ctermbg=238
 
-let g:highlightedyank_highlight_duration = -1
 let mapleader=" "       " leader is space
 
 "  - |     --  Split with leader
