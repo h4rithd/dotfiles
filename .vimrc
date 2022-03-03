@@ -42,8 +42,6 @@ set colorcolumn=120
 highlight ColorColumn ctermbg=238
 
 let g:highlightedyank_highlight_duration = -1
-let g:python_highlight_all = 1
-"let g:lightline = {'colorscheme': 'one'}
 let mapleader=" "       " leader is space
 
 "  - |     --  Split with leader
