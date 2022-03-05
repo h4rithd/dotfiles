@@ -31,6 +31,12 @@ set undodir=~/.vim/undodir
 filetype indent on      " load filetype-specific indent files
 filetype plugin on      " load filetype specific plugin files
 
+" Move 1 more lines up or down
+nnoremap K :m .-2<CR>==
+nnoremap J :m .+1<CR>==
+vnoremap K :m '<-2<CR>gv=gv
+vnoremap J :m '>+1<CR>gv=gv
+
 " [-] onedark Plugin
 packadd! onedark.vim
 colorscheme onedark
