@@ -322,10 +322,12 @@ pserver(){
 }
 
 ncl(){
+    port=4545
+    [[ ! -z "$1" ]] && port=$1
     echo "[command:] script -qc /bin/bash /dev/null"
     echo "[command:] python -c \"import pty;pty.spawn('/bin/bash')\""
     echo "[command:] python3 -c \"import pty;pty.spawn('/bin/bash')\""
-    nc -lvnp 4545
+    rlwrap nc -lvnp $port 
 }
 
 nget(){
