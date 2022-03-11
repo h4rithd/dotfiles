@@ -321,6 +321,10 @@ pserver(){
     python3 -m http.server 80
 }
 
+sserver(){
+    impacket-smbserver share .
+}
+
 ncl(){
     port=4545
     [[ ! -z "$1" ]] && port=$1
