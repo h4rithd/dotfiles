@@ -391,6 +391,17 @@ mwfuzz(){
     /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -c -f fuzz/wfuzz.out,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
 }
 
+proxy(){
+## https://github.com/tnpitsecurity/ligolo-ng
+    if [ ! -f $1 ] ; then
+        sudo ip tuntap add user $USER mode tun ligolo
+        sudo ip link set ligolo up
+        /home/h4rithd/.local/bin/proxy -selfcert
+    else
+        /home/h4rithd/.local/bin/proxy -selfcert
+    fi
+}
+
 alias ccat="cat"
 alias pip="pip3"
 alias ps="ps auxf"
