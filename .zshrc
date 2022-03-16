@@ -325,6 +325,14 @@ sserver(){
     impacket-smbserver share .
 }
 
+penv(){
+    case $1 in
+        "2") virtualenv -p python2 venv ;;
+        "")  virtualenv -p python venv ;;
+    esac
+    source venv/bin/activate
+}
+
 ncl(){
     port=4545
     [[ ! -z "$1" ]] && port=$1
