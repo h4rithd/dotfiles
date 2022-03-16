@@ -322,7 +322,8 @@ pserver(){
 }
 
 sserver(){
-    impacket-smbserver share .
+    ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' | xargs -I {} echo -n "\\\\{}\share\\" | DISPLAY=:0 xclip -sel clip
+    impacket-smbserver share . "$@"
 }
 
 penv(){
@@ -404,25 +405,28 @@ proxy(){
     if [ ! -f $1 ] ; then
         sudo ip tuntap add user $USER mode tun ligolo
         sudo ip link set ligolo up
-        /home/h4rithd/.local/bin/proxy -selfcert
+        /home/$USER/.local/bin/proxy -selfcert
     else
-        /home/h4rithd/.local/bin/proxy -selfcert
+        /home/$USER/.local/bin/proxy -selfcert
     fi
 }
 
-alias ccat="cat"
+alias ..="cd .."
 alias pip="pip3"
 alias ps="ps auxf"
 alias bcat="batcat"
+alias ...="cd ../../"
+alias ccat="/usr/bin/cat"
 alias nmap="sudo grc nmap"
 alias tb="nc termbin.com 9999"
 alias myip="curl ifconfig.ovh"
 alias wireshark="sudo wireshark"
+alias mmsfconsole="sudo msfdb run"
 alias sqlmap="sqlmap --random-agent"
 alias copy="DISPLAY=:0 xclip -sel clip"
-alias wprv="cd /opt/PrviEsc/WinPrviEsc/"
+alias wpr="cd /opt/PrviEsc/WinPrviEsc/"
 alias wget="grc wget --no-check-certificate"
-alias lprv="cd /opt/PrviEsc/LinPrviEsc/scripts/"
+alias lpr="cd /opt/PrviEsc/LinPrviEsc/scripts/"
 alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
 alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias cat="batcat --style='plain' --theme=TwoDark"
