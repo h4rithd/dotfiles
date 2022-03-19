@@ -372,7 +372,7 @@ scanudpall(){
 
 scanudpfast(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -F -oA nmap/UDPFastPorts "$@" ; notify-send -i nmap 'UDP Fast Scan' 'is finished!'
+    sudo grc nmap -n -sUV -T4 -F -vv --version-intensity 0 -oA nmap/UDPFastPorts "$@" ; notify-send -i nmap 'UDP Fast Scan' 'is finished!'
 }
 
 scanudpbest(){
