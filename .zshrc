@@ -367,17 +367,17 @@ scannow(){
 
 scanudpall(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -p- -oA nmap/UDPAllPorts "$@" ; notify-send -i nmap 'UDP All Ports Scan' 'is finished!'
+    sudo grc nmap -n -Pn -vv -sU -p- -oA nmap/UDPAllPorts "$@" ; notify-send -i nmap 'UDP All Ports Scan' 'is finished!'
 }
 
 scanudpfast(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -sUV -T4 -F -vv --version-intensity 0 -oA nmap/UDPFastPorts "$@" ; notify-send -i nmap 'UDP Fast Scan' 'is finished!'
+    sudo grc nmap -n -Pn -sUV -T4 -F -vv --version-intensity 0 -oA nmap/UDPFastPorts "$@" ; notify-send -i nmap 'UDP Fast Scan' 'is finished!'
 }
 
 scanudpbest(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv --open -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts "$@" ; notify-send -i nmap 'Best UDP Scan' 'is finished!' 
+    sudo grc nmap -n -Pn -vv -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts "$@" ; notify-send -i nmap 'Best UDP Scan' 'is finished!' 
 }
 
 scandir(){
