@@ -377,7 +377,7 @@ scanudpfast(){
 
 scanudpbest(){
     [[ ! -d  nmap ]] && mkdir nmap
-    sudo grc nmap -n -Pn -vv -sU -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts "$@" ; notify-send -i nmap 'Best UDP Scan' 'is finished!' 
+    sudo grc nmap -n -Pn -vv -sUV -p 53,67,69,111,123,135,137,138,161,177,445,500,631,623,1434,1900,4500 -oA nmap/UDPBestPorts "$@" ; notify-send -i nmap 'Best UDP Scan' 'is finished!' 
 }
 
 scandir(){
@@ -421,7 +421,6 @@ alias nmap="sudo grc nmap"
 alias tb="nc termbin.com 9999"
 alias myip="curl ifconfig.ovh"
 alias wireshark="sudo wireshark"
-alias mmsfconsole="sudo msfdb run"
 alias sqlmap="sqlmap --random-agent"
 alias copy="DISPLAY=:0 xclip -sel clip"
 alias wpr="cd /opt/PrviEsc/WinPrviEsc/"
