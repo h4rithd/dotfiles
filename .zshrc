@@ -275,7 +275,7 @@ fi
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 
-tarex(){
+xtar(){
   if [ -f $1 ] ; then
     case $1 in
       *.Z)         uncompress $1;;
