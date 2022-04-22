@@ -382,22 +382,54 @@ scanudpbest(){
 
 scandir(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt "$@" ; notify-send -i dirbuster 'Gobuster scan' 'is finished!'
+    if [[ -f $(pwd)/fuzz/gobuster.txt ]]
+    then
+        outfile=''
+        echo "[!] gobuster.txt file alrady exists.."
+        vared -p '[+] Please give new name (gobuster-<name>.txt): ' outfile 
+        grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster-$outfile.txt "$@" ; notify-send -i dirbuster 'Gobuster scan' 'is finished!'
+    else
+        grc gobuster dir -e -f -t 20 -k -a 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -o fuzz/gobuster.txt "$@" ; notify-send -i dirbuster 'Gobuster scan' 'is finished!'
+    fi
 }
 
 mdirsearch(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.out --format=plain --full-url "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+    if [[ -f $(pwd)/fuzz/dirsearch.txt ]]
+    then
+        outfile=''
+        echo "[!] dirsearch.txt file alrady exists.."
+        vared -p '[+] Please give new name (dirsearch-<name>.txt): ' outfile 
+        python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch-$outfile.txt --format=plain --full-url "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+    else
+        python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.txt --format=plain --full-url "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+    fi
 }
 
 mffuf(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -H 'Content-Type: application/x-www-form-urlencoded' "$@" | tee fuzz/ffuf.out ; notify-send -i ffuf 'ffuf scan' 'is finished!'
+    if [[ -f $(pwd)/fuzz/ffuf.txt ]]
+    then
+        outfile=''
+        echo "[!] ffuf.txt file alrady exists.."
+        vared -p '[+] Please give new name (fuff-<name>.txt): ' outfile 
+        /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -H 'Content-Type: application/x-www-form-urlencoded' "$@" | tee fuzz/ffuf-$outfile.txt ; notify-send -i ffuf 'ffuf scan' 'is finished!'
+    else
+        /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -H 'Content-Type: application/x-www-form-urlencoded' "$@" | tee fuzz/ffuf.txt ; notify-send -i ffuf 'ffuf scan' 'is finished!'
+    fi
 }
 
 mwfuzz(){
     [[ ! -d  fuzz ]] && mkdir fuzz
-    /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -c -f fuzz/wfuzz.out,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
+    if [[ -f $(pwd)/fuzz/wfuzz.txt ]]
+    then
+        outfile=''
+        echo "[!] wfuzz.txt file alrady exists.."
+        vared -p '[+] Please give new name (wfuzz-<name>.txt): ' outfile 
+        /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -c -f fuzz/wfuzz-$outfile.txt,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
+    else
+        /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -c -f fuzz/wfuzz.txt,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
+    fi
 }
 
 proxy(){
