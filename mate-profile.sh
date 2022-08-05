@@ -1,5 +1,11 @@
-#!/bin/bash
 
+## Change shell to ZSH
+sudo apt-get install -y zsh zsh-syntax-highlighting zsh-autosuggestions 
+sudo chsh -s $(which zsh)
+chsh -s $(which zsh)
+
+## Install mate terminal and install color profile
+sudo apt-get install -y mate-terminal dconf-cli
 dconf write /org/mate/terminal/global/profile-list "['default', 'h4rithd']"
 cat <<EOF | dconf load /org/mate/terminal/profiles/
 [h4rithd]
