@@ -1,0 +1,19 @@
+#!/bin/bash
+
+url="https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEAS"
+path=$PWD
+
+rm -rf winPEAS* pure
+
+echo "[+] Downloading winPEAS...."
+wget -q --show-progress "$url"any_ofs.exe -O $path/winPEAS.exe
+wget -q --show-progress "$url"x64_ofs.exe -O $path/winPEASx64.exe
+wget -q --show-progress "$url"x86_ofs.exe -O $path/winPEASx86.exe
+
+mkdir $path/pure
+
+wget -q --show-progress "$url"any.exe -O $path/pure/winPEAS.exe
+wget -q --show-progress "$url"x64.exe -O $path/pure/winPEASx64.exe
+wget -q --show-progress "$url"x86.exe -O $path/pure/winPEASx86.exe
+
+echo "[+] Successfull!!"
