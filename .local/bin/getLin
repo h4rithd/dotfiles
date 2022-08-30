@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -rf linpeas.sh
+echo "[+] Downloading linPEAS...."
+wget -q --show-progres https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh -O linpeas.sh
+echo "[+] Successfull!!"
