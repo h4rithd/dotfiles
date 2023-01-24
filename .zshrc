@@ -265,6 +265,10 @@ export mwords="/usr/share/seclists/Discovery/Web-Content/raft-medium-words.txt"
 export mfiles="/usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt"
 export mlwords="/usr/share/seclists/Discovery/Web-Content/raft-medium-words-lowercase.txt"
 export mlfiles="/usr/share/seclists/Discovery/Web-Content/raft-medium-files-lowercase.txt"
+export dnsl="/usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt"
+export dnsm="/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
+export dnsf="/usr/share/seclists/Discovery/DNS/fierce-hostlist.txt"
+export dnsj="/usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"
 
 if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
 	# sudo apt install source-highlight
