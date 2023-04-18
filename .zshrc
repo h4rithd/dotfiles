@@ -453,6 +453,10 @@ proxy(){
     fi
 }
 
+ntlm_hash () {
+    iconv -f ASCII -t UTF-16LE <(printf "$1") | openssl dgst -md4
+}
+
 alias ..="cd .."
 alias pip="pip3"
 alias ps="ps auxf"
