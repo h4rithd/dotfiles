@@ -453,7 +453,7 @@ proxy(){
     fi
 }
 
-ntlm_hash () {
+ntlm_hash(){
     iconv -f ASCII -t UTF-16LE <(printf "$1") | openssl dgst -md4
 }
 
