@@ -1,9 +1,0 @@
-{
-    "workbench.colorTheme": "One Dark Pro Darker",
-    "workbench.iconTheme": "material-icon-theme",
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "react-native-tools.showUserTips": false,
-    "javascript.updateImportsOnFileMove.enabled": "always"
-}
