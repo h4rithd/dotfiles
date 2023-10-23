@@ -1,9 +1,5 @@
-# ====================================================( Edit by h4rithd.com )==========================
-
 # ~/.zshrc file for zsh interactive shells.
 # see /usr/share/doc/zsh/examples/zshrc for examples
-
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
 setopt autocd              # change directory just by typing its name
 #setopt correct            # auto correct mistakes
@@ -13,38 +9,6 @@ setopt nonomatch           # hide error message if there is no match for the pat
 setopt notify              # report the status of background jobs immediately
 setopt numericglobsort     # sort filenames numerically when it makes sense
 setopt promptsubst         # enable command substitution in prompt
-
-# configure key keybindings
-bindkey -e                                        # emacs key bindings
-bindkey -s "\e[5~" "\e[1;2A"          # Shift + Up Arrow for pageup
-bindkey -s "\e[6~" "\e[1;2B"          # Shift + Down Arrow for pageDown
-bindkey ' ' magic-space                           # do history expansion on space
-bindkey '^[[1;5C' forward-word                    # ctrl + ->
-bindkey "^F" forward-char             # Control + F
-bindkey '^[[1;5D' backward-word                   # ctrl + <-
-bindkey "^B" backward-char            # Control + B
-bindkey "^U" backward-kill-line       # Control + U
-bindkey "^W" backward-kill-word       # Control + W
-bindkey '^[[5~' beginning-of-buffer-or-history    # page up
-bindkey '^[[6~' end-of-buffer-or-history          # page down
-bindkey '^[[H' beginning-of-line                  # home
-bindkey '^[[F' end-of-line                        # end
-bindkey "^A" beginning-of-line        # Control + A
-bindkey "^E" end-of-line              # Control + E
-bindkey "^C" send-break              # Control + C
-bindkey "^R" history-incremental-search-backward # Control + R
-bindkey '^[[Z' undo                               # shift + tab undo last action
-bindkey "^K" kill-line                # Control + K
-bindkey "^D" delete-char              # Control + D
-bindkey "^H" backward-delete-char     # Control + H
-bindkey "^[[3~" kill-word             # Command + D
-bindkey "^." yank-last-arg            # Command + .
-#bindkey "^[[1~" beginning-of-history  # Command + <
-#bindkey "^[[4~" end-of-history        # Command + >
-#bindkey "^L" clear-screen             # Control + L
-#bindkey "^_" undo                    # Control + _
-#bindkey '^[[3~' delete-char                       # delete
-#bindkey '^[[3;5~' kill-word                       # ctrl + Supr
 
 WORDCHARS=${WORDCHARS//\/} # Don't consider certain characters part of the word
 
@@ -268,6 +232,41 @@ if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
 fi
 
+# enable command-not-found if installed
+if [ -f /etc/zsh_command_not_found ]; then
+    . /etc/zsh_command_not_found
+fi
+
+bindkey -e                                        # emacs key bindings
+bindkey ' ' magic-space                           # do history expansion on space
+bindkey '^[[3;5~' kill-word                       # ctrl + Supr
+bindkey '^[[3~' delete-char                       # delete
+bindkey '^[[1;5C' forward-word                    # ctrl + ->
+bindkey '^[[1;5D' backward-word                   # ctrl + <-
+bindkey '^[[5~' beginning-of-buffer-or-history    # page up
+bindkey '^[[6~' end-of-buffer-or-history          # page down
+bindkey '^[[H' beginning-of-line                  # home
+bindkey '^[[F' end-of-line                        # end
+bindkey '^[[Z' undo                               # shift + tab undo last action
+bindkey "^A" beginning-of-line        # Control + A
+bindkey "^E" end-of-line              # Control + E
+bindkey "^F" forward-char             # Control + F
+bindkey "^B" backward-char            # Control + B
+#bindkey "^L" clear-screen             # Control + L
+bindkey "^C" send-break              # Control + C
+bindkey "^R" history-incremental-search-backward # Control + R
+bindkey "^_" undo                    # Control + _
+bindkey "^U" backward-kill-line       # Control + U
+bindkey "^K" kill-line                # Control + K
+bindkey "^W" backward-kill-word       # Control + W
+bindkey "^D" delete-char              # Control + D
+bindkey "^H" backward-delete-char     # Control + H
+bindkey "^[[3~" kill-word             # Command + D
+bindkey "^." yank-last-arg            # Command + .
+#bindkey "^[[1~" beginning-of-history  # Command + <
+#bindkey "^[[4~" end-of-history        # Command + >
+
+
 if [[ -f /opt/homebrew/bin/src-hilite-lesspipe.sh ]]; then
 	# sudo apt install source-highlight
 	export LESSOPEN="| /opt/homebrew/bin/src-hilite-lesspipe.sh %s"
@@ -277,20 +276,22 @@ fi
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "/opt/homebrew/etc/grc.zsh" ]] && source /opt/homebrew/etc/grc.zsh
 
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
-source $ZPLUG_HOME/init.zsh
-zplug load
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
+# export ZPLUG_HOME=/opt/homebrew/opt/zplug
+# source $ZPLUG_HOME/init.zsh
+# zplug load
+# if ! zplug check --verbose; then
+#     printf "Install? [y/N]: "
+#     if read -q; then
+#         echo; zplug install
+#     fi
+# fi
 
 export GIT_SSL_NO_VERIFY=1
 export PIP_DISABLE_PIP_VERSION_CHECK=1
 export SUDO_PROMPT='[!] Give me the password 🔐: '
 export PATH=$PATH:/opt/homebrew/bin/
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 alias pip="pip3"
 alias ps="sudo grc ps aux"
