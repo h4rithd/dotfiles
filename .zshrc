@@ -411,9 +411,9 @@ dirsearch(){
         outfile=''
         echo "[!] dirsearch.txt file alrady exists.."
         vared -p '[+] Please give new name (dirsearch-<name>.txt): ' outfile 
-        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch-$outfile.txt --format=plain --full-url --random-agent "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch-$outfile.txt --format=plain --full-url --random-agent -e php,txt,html "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
     else
-        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.txt --format=plain --full-url --random-agent "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.txt --format=plain --full-url --random-agent -e php,txt,html "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
     fi
 }
 
