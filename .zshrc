@@ -270,8 +270,8 @@ export dnsm="/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 export dnsf="/usr/share/seclists/Discovery/DNS/fierce-hostlist.txt"
 export dnsj="/usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"
 
+# sudo apt install source-highlight
 if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
-	# sudo apt install source-highlight
 	export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 	export LESS=' -R '
 fi
@@ -303,8 +303,8 @@ xtar(){
   fi
 }
 
+# sudo apt-get instal wmctrl
 openvpn(){
-    # sudo apt-get instal wmctrl
     [[ -f /usr/bin/wmctrl ]] && wmctrl -r "Terminal" -e 2,136,20,1699,963
     sudo /usr/sbin/openvpn "$@"
 }
@@ -316,6 +316,7 @@ upnginx(){
     sudo systemctl start nginx
 }
 
+# sudo apt-get install xclip
 pserver(){
     clear 
     echo "-------------------------" 
@@ -403,29 +404,29 @@ scandir(){
     fi
 }
 
-mdirsearch(){
+dirsearch(){
     [[ ! -d  fuzz ]] && mkdir fuzz
     if [[ -f $(pwd)/fuzz/dirsearch.txt ]]
     then
         outfile=''
         echo "[!] dirsearch.txt file alrady exists.."
         vared -p '[+] Please give new name (dirsearch-<name>.txt): ' outfile 
-        python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch-$outfile.txt --format=plain --full-url "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch-$outfile.txt --format=plain --full-url --random-agent "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
     else
-        python3 /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.txt --format=plain --full-url "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.txt --format=plain --full-url --random-agent "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
     fi
 }
 
-mffuf(){
+ffuf(){
     [[ ! -d  fuzz ]] && mkdir fuzz
     if [[ -f $(pwd)/fuzz/ffuf.txt ]]
     then
         outfile=''
         echo "[!] ffuf.txt file alrady exists.."
         vared -p '[+] Please give new name (fuff-<name>.txt): ' outfile 
-        /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -H 'Content-Type: application/x-www-form-urlencoded' "$@" | tee fuzz/ffuf-$outfile.txt ; notify-send -i ffuf 'ffuf scan' 'is finished!'
+        /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1' -mc all "$@" | tee fuzz/ffuf-$outfile.txt ; notify-send -i ffuf 'ffuf scan' 'is finished!'
     else
-        /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -H 'Content-Type: application/x-www-form-urlencoded' "$@" | tee fuzz/ffuf.txt ; notify-send -i ffuf 'ffuf scan' 'is finished!'
+        /usr/bin/ffuf -c -ic -H 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1' -mc all "$@" | tee fuzz/ffuf.txt ; notify-send -i ffuf 'ffuf scan' 'is finished!'
     fi
 }
 
@@ -436,13 +437,13 @@ mwfuzz(){
         outfile=''
         echo "[!] wfuzz.txt file alrady exists.."
         vared -p '[+] Please give new name (wfuzz-<name>.txt): ' outfile 
-        /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -c -f fuzz/wfuzz-$outfile.txt,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
+        /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1' -c -f fuzz/wfuzz-$outfile.txt,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
     else
-        /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0' -c -f fuzz/wfuzz.txt,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
+        /usr/local/bin/wfuzz -H 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Mobile/15E148 Safari/604.1' -c -f fuzz/wfuzz.txt,raw "$@" ; notify-send -i wfuzz 'wfuzz Scan' 'is finished!'
     fi
 }
 
-proxy(){
+proxy(){how
 ## https://github.com/tnpitsecurity/ligolo-ng
     if [ ! -f $1 ] ; then
         sudo ip tuntap add user $USER mode tun ligolo
