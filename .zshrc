@@ -351,7 +351,7 @@ ncl(){
 nclr(){
     port=4545
     [[ ! -z "$1" ]] && port=$1
-    rlwrap nc -lvnp $port 
+    rlwrap -cAr nc -lvnp $port 
 }
 
 nget(){
