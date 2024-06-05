@@ -443,7 +443,7 @@ mwfuzz(){
     fi
 }
 
-proxy(){how
+proxy(){
 ## https://github.com/tnpitsecurity/ligolo-ng
     if [ ! -f $1 ] ; then
         sudo ip tuntap add user $USER mode tun ligolo
