@@ -458,6 +458,10 @@ ntlm_hash(){
     iconv -f ASCII -t UTF-16LE <(printf "$1") | openssl dgst -md4
 }
 
+crt.sh(){
+    curl -s "https://crt.sh/?q=%.${1}&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u
+}
+
 alias ..="cd .."
 alias pip="pip3"
 alias ps="ps auxf"
