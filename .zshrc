@@ -462,6 +462,10 @@ crt.sh(){
     curl -s "https://crt.sh/?q=%.${1}&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u
 }
 
+yt-dlp(){
+    yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ${1}
+}
+
 alias ..="cd .."
 alias pip="pip3"
 alias ps="ps auxf"
