@@ -463,7 +463,8 @@ crt.sh(){
 }
 
 yt-dlp(){
-    yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ${1}
+# pip install yt-dlp && sudo apt-get instll ffmpeg
+    yt-dlp -N 10 --color always --write-subs  --sub-langs en --sub-format srt -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ${1}
 }
 
 alias ..="cd .."
