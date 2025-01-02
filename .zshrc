@@ -467,6 +467,67 @@ yt-dlp(){
     yt-dlp -N 10 --color always --write-subs  --sub-langs en --sub-format srt -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ${1}
 }
 
+encode_decode() {
+    local mode=""
+    local decode=false
+    local text=""
+
+    # Parse command-line arguments
+    while [[ "$1" != "" ]]; do
+        case $1 in
+            -h) mode="html"; shift ;;  # HTML encoding or decoding
+            -u) mode="url"; shift ;;   # URL encoding or decoding
+            -d) decode=true; shift ;;  # Decode instead of encode
+            *)
+                text="$1"; shift ;;    # Treat remaining argument as the text
+        esac
+    done
+
+    # Check if text is provided
+    if [[ -z "$text" ]]; then
+        echo "Error: No text provided."
+        echo
+        echo "Usage: encode_decode [-h|-u] [-d] <text>"
+        echo
+        echo "Options:"
+        echo "  -h        Encode or decode text as HTML entities."
+        echo "  -u        Encode or decode text as a URL."
+        echo "  -d        Perform decoding instead of encoding."
+        echo
+        echo "Examples:"
+        echo "  HTML Encoding:   encode_decode -h 'Hello <World> & \"Quotes\"'"
+        echo "  URL Encoding:    encode_decode -u 'Hello World! @#$%^&*()'"
+        echo "  HTML Decoding:   encode_decode -h -d 'Hello &lt;World&gt; &amp; &quot;Quotes&quot;'"
+        echo "  URL Decoding:    encode_decode -u -d 'Hello%20World%21%20%40%23%24%25'"
+        return 1
+    fi
+
+    # Perform encoding or decoding
+    if $decode; then
+        if [[ "$mode" == "html" ]]; then
+            result=$(python3 -c "import html; print(html.unescape('$text'))")
+        elif [[ "$mode" == "url" ]]; then
+            result=$(python3 -c "import urllib.parse; print(urllib.parse.unquote('$text'))")
+        else
+            echo "Error: Decoding requires -h (HTML) or -u (URL)."
+            return 1
+        fi
+    else
+        if [[ "$mode" == "html" ]]; then
+            result=$(python3 -c "import html; print(html.escape('$text'))")
+        elif [[ "$mode" == "url" ]]; then
+            result=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$text'))")
+        else
+            echo "Error: Encoding requires -h (HTML) or -u (URL)."
+            return 1
+        fi
+    fi
+
+    # Output the result
+    echo "$result"
+}
+
+
 alias ..="cd .."
 alias pip="pip3"
 alias ps="ps auxf"
