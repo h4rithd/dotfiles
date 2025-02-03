@@ -453,9 +453,9 @@ proxy(){
     wget -q --show-progress $(wget -qO- https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest | grep "browser_download_url" | grep "linux_amd64.tar.gz" | grep agent | awk -F '"' '{print $4}') -O /tmp/agent-linux.tar.gz
     wget -q --show-progress $(wget -qO- https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest | grep "browser_download_url" | grep "windows_amd64.zip" | grep agent | awk -F '"' '{print $4}') -O /tmp/agent-windows.zip
     tar -xvf /tmp/proxy.tar.gz -C /home/$USER/.local/bin/ proxy 
-    tar -xvf /tmp/agent-linux.tar.gz -C $PWD/Ligolo-g agent 
-    unzip -j /tmp/agent-windows.zip -d $PWD/Ligolo-g agent.exe
-    cd ..
+    tar -xvf /tmp/agent-linux.tar.gz -C $PWD/Ligolo-ng agent 
+    unzip -j /tmp/agent-windows.zip -d $PWD/Ligolo-ng agent.exe
+    cd Ligolo-ng
     if [ ! -f $1 ] ; then
         sudo ip tuntap add user $USER mode tun ligolo
         sudo ip link set ligolo up
