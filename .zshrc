@@ -20,7 +20,7 @@ bindkey -e                                        # emacs key bindings
 bindkey ' ' magic-space                           # do history expansion on space
 bindkey '^[[3;5~' kill-word                       # ctrl + Supr
 bindkey '^[[3~' delete-char                       # delete
-bindkey '^[[1;5C' forward-word                    # ctrl + ->
+bindkey '^[[1;5C' forward-word                    # ctrl + -> 
 bindkey '^[[1;5D' backward-word                   # ctrl + <-
 bindkey '^[[5~' beginning-of-buffer-or-history    # page up
 bindkey '^[[6~' end-of-buffer-or-history          # page down
@@ -253,8 +253,8 @@ fi
 
 
 # ====================================================( Edit by h4rithd.com )========================== 
-# sudo apt-get install cmatrix
-#cmatrix  -r -s # matrix banner
+## sudo apt-get install cmatrix
+# cmatrix  -r -s # matrix banner
 
 export GIT_SSL_NO_VERIFY=1
 export PATH="$HOME/.local/bin:$PATH"
@@ -270,7 +270,7 @@ export dnsm="/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt"
 export dnsf="/usr/share/seclists/Discovery/DNS/fierce-hostlist.txt"
 export dnsj="/usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt"
 
-# sudo apt install source-highlight
+## sudo apt install source-highlight
 if [[ -f /usr/share/source-highlight/src-hilite-lesspipe.sh ]]; then
 	export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
 	export LESS=' -R '
@@ -303,7 +303,7 @@ xtar(){
   fi
 }
 
-# sudo apt-get instal wmctrl
+## sudo apt-get instal wmctrl
 openvpn(){
     [[ -f /usr/bin/wmctrl ]] && wmctrl -r "Terminal" -e 2,136,20,1699,963
     sudo /usr/sbin/openvpn "$@"
@@ -316,17 +316,20 @@ upnginx(){
     sudo systemctl start nginx
 }
 
-# sudo apt-get install xclip
+## sudo apt-get install xclip
 pserver(){
     clear 
-    echo "-------------------------" 
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' '-' 
     ls
-    echo ""
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' '_'
     ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' | xargs echo -n | DISPLAY=:0 xclip -sel clip
     python3 -m http.server 80
 }
 
 sserver(){
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' '-' 
+    ls
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' '_'
     ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' | xargs -I {} echo -n "\\\\{}\share\\" | DISPLAY=:0 xclip -sel clip
     impacket-smbserver share . "$@"
 }
@@ -411,9 +414,9 @@ dirsearch(){
         outfile=''
         echo "[!] dirsearch.txt file alrady exists.."
         vared -p '[+] Please give new name (dirsearch-<name>.txt): ' outfile 
-        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch-$outfile.txt --format=plain --full-url --random-agent -e php,txt,html "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -f  -o $(pwd)/fuzz/dirsearch-$outfile.txt --format=plain --full-url --random-agent -e php,txt,html "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
     else
-        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -r -f -o $(pwd)/fuzz/dirsearch.txt --format=plain --full-url --random-agent -e php,txt,html "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
+        python3 -W ignore /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -f -o $(pwd)/fuzz/dirsearch.txt --format=plain --full-url --random-agent -e php,txt,html "$@" ; notify-send -i dirbuster 'Dirsearch Scan' 'is finished!'
     fi
 }
 
@@ -443,8 +446,16 @@ mwfuzz(){
     fi
 }
 
-proxy(){
 ## https://github.com/tnpitsecurity/ligolo-ng
+proxy(){
+    mkdir -p $PWD/Ligolo-ng
+    wget -q --show-progress $(wget -qO- https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest | grep "browser_download_url" | grep "linux_arm64.tar.gz" | grep proxy | awk -F '"' '{print $4}') -O /tmp/proxy.tar.gz
+    wget -q --show-progress $(wget -qO- https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest | grep "browser_download_url" | grep "linux_amd64.tar.gz" | grep agent | awk -F '"' '{print $4}') -O /tmp/agent-linux.tar.gz
+    wget -q --show-progress $(wget -qO- https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest | grep "browser_download_url" | grep "windows_amd64.zip" | grep agent | awk -F '"' '{print $4}') -O /tmp/agent-windows.zip
+    tar -xvf /tmp/proxy.tar.gz -C /home/$USER/.local/bin/ proxy 
+    tar -xvf /tmp/agent-linux.tar.gz -C $PWD/Ligolo-g agent 
+    unzip -j /tmp/agent-windows.zip -d $PWD/Ligolo-g agent.exe
+    cd ..
     if [ ! -f $1 ] ; then
         sudo ip tuntap add user $USER mode tun ligolo
         sudo ip link set ligolo up
@@ -462,8 +473,8 @@ crt.sh(){
     curl -s "https://crt.sh/?q=%.${1}&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u
 }
 
+## pip install yt-dlp && sudo apt-get instll ffmpeg
 yt-dlp(){
-# pip install yt-dlp && sudo apt-get instll ffmpeg
     yt-dlp -N 10 --color always --write-subs  --sub-langs en --sub-format srt -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ${1}
 }
 
@@ -483,7 +494,6 @@ encode_decode() {
         esac
     done
 
-    # Check if text is provided
     if [[ -z "$text" ]]; then
         echo "Error: No text provided."
         echo
@@ -502,7 +512,6 @@ encode_decode() {
         return 1
     fi
 
-    # Perform encoding or decoding
     if $decode; then
         if [[ "$mode" == "html" ]]; then
             result=$(python3 -c "import html; print(html.unescape('$text'))")
@@ -523,7 +532,6 @@ encode_decode() {
         fi
     fi
 
-    # Output the result
     echo "$result"
 }
 
@@ -543,8 +551,5 @@ alias copy="DISPLAY=:0 xclip -sel clip"
 alias wpr="cd /opt/PrviEsc/WinPrviEsc/"
 alias wget="grc wget --no-check-certificate"
 alias lpr="cd /opt/PrviEsc/LinPrviEsc/scripts/"
-alias csrfb33f="/opt/MyTools/csrfb33f/csrfb33f.py"
-alias crunch3r="/opt/MyTools/cruNch3r/cruNch3r.py"
 alias cat="batcat --style='plain' --theme=TwoDark"
-alias imp-fuzzer="/opt/MyTools/imp-fuzzer/imp-fuzzer.py"
 alias gsize="du -hac --max-depth=1 2>/dev/null | sort -h"
