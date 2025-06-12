@@ -268,6 +268,15 @@ if [[ -f /opt/homebrew/bin/src-hilite-lesspipe.sh ]]; then
 	export LESS=' -R '
 fi
 
+# brew install eza
+ls() {
+  if [[ " $* " =~ " -l " && " $* " =~ " -a " ]]; then
+    command eza "$@" -alF --color=auto --icons=auto --time-style long-iso -o --total-size
+  else
+    command /bin/ls "$@"
+  fi
+}
+
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh #brew install fzf
 [[ -s "/opt/homebrew/etc/grc.zsh" ]] && source /opt/homebrew/etc/grc.zsh #brew install grc
 
@@ -285,7 +294,6 @@ alias pip="pip3"
 alias ps="sudo grc ps aux"
 alias tb="nc termbin.com 9999"
 alias myip="curl ifconfig.ovh"
-alias ls="eza -alF --color=auto --icons=auto --time-style long-iso -o --total-size"  #brew install eza
 alias gsize="ncdu --show-itemcount --show-graph --graph-style eighth-block --color dark" #brew install ncdu
 alias clean="brew update && brew upgrade && brew upgrade --cask && brew cleanup && brew doctor"
 alias cat="bat --style='plain' --theme=TwoDark"
