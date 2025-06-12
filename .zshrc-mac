@@ -275,6 +275,7 @@ export GIT_SSL_NO_VERIFY=1
 export PIP_DISABLE_PIP_VERSION_CHECK=1
 export SUDO_PROMPT='[!] Give me the password 🔐: '
 export PATH=$PATH:/opt/homebrew/bin
+export TAR_OPTIONS="--exclude='.DS_Store'"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
