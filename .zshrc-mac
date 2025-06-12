@@ -220,11 +220,6 @@ if [ -x /usr/bin/dircolors ]; then
     zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 fi
 
-# some more ls aliases
-alias ll='ls -l'
-alias la='ls -A'
-alias l='ls -CF'
-
 # enable auto-suggestions based on the history
 if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
     . /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -268,33 +263,29 @@ bindkey "^." yank-last-arg            # Command + .
 
 
 if [[ -f /opt/homebrew/bin/src-hilite-lesspipe.sh ]]; then
-	# sudo apt install source-highlight
+	#brew install source-highlight
 	export LESSOPEN="| /opt/homebrew/bin/src-hilite-lesspipe.sh %s"
 	export LESS=' -R '
 fi
 
-[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-[[ -s "/opt/homebrew/etc/grc.zsh" ]] && source /opt/homebrew/etc/grc.zsh
-
-# export ZPLUG_HOME=/opt/homebrew/opt/zplug
-# source $ZPLUG_HOME/init.zsh
-# zplug load
-# if ! zplug check --verbose; then
-#     printf "Install? [y/N]: "
-#     if read -q; then
-#         echo; zplug install
-#     fi
-# fi
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh #brew install fzf
+[[ -s "/opt/homebrew/etc/grc.zsh" ]] && source /opt/homebrew/etc/grc.zsh #brew install grc
 
 export GIT_SSL_NO_VERIFY=1
 export PIP_DISABLE_PIP_VERSION_CHECK=1
 export SUDO_PROMPT='[!] Give me the password 🔐: '
-export PATH=$PATH:/opt/homebrew/bin/
+export PATH=$PATH:/opt/homebrew/bin
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
 alias pip="pip3"
 alias ps="sudo grc ps aux"
 alias tb="nc termbin.com 9999"
 alias myip="curl ifconfig.ovh"
+alias ls="eza -alF --color=always --icons"  #brew install eza
+alias gsize="ncdu --show-itemcount --show-graph --graph-style eighth-block --color dark" #brew install ncdu
+alias clean="brew update && brew upgrade && brew upgrade --cask && brew cleanup && brew doctor"
 alias cat="bat --style='plain' --theme=TwoDark"
