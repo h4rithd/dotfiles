@@ -261,6 +261,81 @@ bindkey "^." yank-last-arg            # Command + .
 #bindkey "^[[1~" beginning-of-history  # Command + <
 #bindkey "^[[4~" end-of-history        # Command + >
 
+# DeepSeek Chat Function
+chat() {
+  local API_KEY="your_api_key_here"  # REPLACE WITH YOUR ACTUAL API KEY
+  local MODEL="deepseek-chat"
+  local URL="https://api.deepseek.com/v1/chat/completions"
+
+  local HISTORY_FILE="${HOME}/.deepseek_chat_history"
+  local TEMP_FILE=$(mktemp)
+
+  if [[ ! -f "$HISTORY_FILE" ]]; then
+    echo '[]' > "$HISTORY_FILE"
+  fi
+
+  if [[ "$1" == "-h" ]]; then
+    echo "DeepSeek Chat Terminal Client"
+    echo "Usage:"
+    echo "  chat <message>       - Continue current conversation"
+    echo "  chat -n <message>    - Start new conversation"
+    echo "  chat -h              - Show this help"
+    return 0
+  fi
+
+  if [[ "$1" == "-n" ]]; then
+    shift
+    echo '[]' > "$HISTORY_FILE"
+    echo "Started new conversation"
+    [[ -z "$*" ]] && return 0
+  fi
+
+  if [[ -z "$*" ]]; then
+    echo "Please provide a message (use 'chat -h' for help)"
+    return 1
+  fi
+
+  local messages=("${(@f)$(cat "$HISTORY_FILE")}")
+  local user_message=$(jq -n --arg content "$*" '{role: "user", content: $content}')
+  messages+=($user_message)
+  local json_messages=$(printf '%s\n' "${messages[@]}" | jq -s '.')
+
+  local payload=$(jq -n \
+    --arg model "$MODEL" \
+    --argjson messages "$json_messages" \
+    '{model: $model, messages: $messages}')
+
+  local response=$(curl -s -X POST "$URL" \
+    -H "Authorization: Bearer $API_KEY" \
+    -H "Content-Type: application/json" \
+    -d "$payload")
+
+  local reply=$(echo "$response" | jq -r '.choices[0].message.content')
+  local error=$(echo "$response" | jq -r '.error.message // empty')
+
+  if [[ -n "$error" ]]; then
+    echo "API Error: $error"
+    return 1
+  fi
+
+  local assistant_message=$(jq -n --arg content "$reply" '{role: "assistant", content: $content}')
+  messages+=($assistant_message)
+
+  printf '%s\n' "${messages[@]}" | jq -s '.' > "$HISTORY_FILE"
+
+  echo "\n\033[1;34mDeepSeek:\033[0m"
+  echo "$reply" | bat -p -l md --color=always 2>/dev/null || echo "$reply"
+  echo ""
+}
+
+_comp_chat() {
+  _arguments \
+    '-n[Start new conversation]' \
+    '-h[Show help]' \
+    '*: :->message'
+}
+
+compdef _comp_chat chat
 
 if [[ -f /opt/homebrew/bin/src-hilite-lesspipe.sh ]]; then
 	#brew install source-highlight
