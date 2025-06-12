@@ -271,11 +271,14 @@ fi
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh #brew install fzf
 [[ -s "/opt/homebrew/etc/grc.zsh" ]] && source /opt/homebrew/etc/grc.zsh #brew install grc
 
+tar() {
+  command /usr/bin/tar --exclude='.DS_Store' "$@"
+}
+
 export GIT_SSL_NO_VERIFY=1
 export PIP_DISABLE_PIP_VERSION_CHECK=1
 export SUDO_PROMPT='[!] Give me the password 🔐: '
 export PATH=$PATH:/opt/homebrew/bin
-export TAR_OPTIONS="--exclude='.DS_Store'"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
