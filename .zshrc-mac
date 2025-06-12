@@ -285,7 +285,7 @@ alias pip="pip3"
 alias ps="sudo grc ps aux"
 alias tb="nc termbin.com 9999"
 alias myip="curl ifconfig.ovh"
-alias ls="eza -alF --color=always --icons"  #brew install eza
+alias ls="eza -alF --color=auto --icons=auto --time-style long-iso -o --total-size"  #brew install eza
 alias gsize="ncdu --show-itemcount --show-graph --graph-style eighth-block --color dark" #brew install ncdu
 alias clean="brew update && brew upgrade && brew upgrade --cask && brew cleanup && brew doctor"
 alias cat="bat --style='plain' --theme=TwoDark"
