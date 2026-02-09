@@ -9,4 +9,5 @@ git clone https://github.com/mhinz/vim-startify.git ~/.vim/pack/vendor/start/vim
 git clone --depth 1 https://github.com/lifepillar/vim-mucomplete.git ~/.vim/pack/bundle/start/vim-mucomplete
 mkdir ~/.vim/pack/plugins/opt
 git clone https://github.com/joshdick/onedark.vim.git ~/.vim/pack/plugins/opt/onedark.vim
+mkdir -p ~/.vim/pack/plugins/start && git clone https://github.com/mg979/vim-visual-multi ~/.vim/pack/plugins/start/vim-visual-multi
 
