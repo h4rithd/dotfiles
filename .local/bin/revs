@@ -3,7 +3,7 @@
 #-----[by h4rithd.com]
 
 port=4545
-ip="$(ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*')"
+ip="$(ip -4 addr show tun0 | awk '/inet / {print $2}' | cut -d/ -f1)"
 
 [[ ! -z "$2" ]] && ip=$2
 [[ ! -z "$3" ]] && port=$3
