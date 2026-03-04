@@ -322,7 +322,7 @@ pserver(){
     printf '%*s\n' "$(tput cols)" '' | tr ' ' '-' 
     ls
     printf '%*s\n' "$(tput cols)" '' | tr ' ' '_'
-    ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' | xargs echo -n | DISPLAY=:0 xclip -sel clip
+    ip -4 addr show tun0 | awk '/inet / {print $2}' | cut -d/ -f1 | xargs echo -n | DISPLAY=:0 xclip -sel clip
     python3 -m http.server 80
 }
 
@@ -330,7 +330,7 @@ sserver(){
     printf '%*s\n' "$(tput cols)" '' | tr ' ' '-' 
     ls
     printf '%*s\n' "$(tput cols)" '' | tr ' ' '_'
-    ip addr show | grep 'global tun0' | grep -o '[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*' | xargs -I {} echo -n "\\\\{}\share\\" | DISPLAY=:0 xclip -sel clip
+    ip -4 addr show tun0 | awk '/inet / {print $2}' | cut -d/ -f1 | xargs -I {} echo -n "\\\\{}\share\\" | DISPLAY=:0 xclip -sel clip
     impacket-smbserver share . "$@"
 }
 
