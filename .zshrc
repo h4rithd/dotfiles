@@ -256,6 +256,7 @@ fi
 ## sudo apt-get install cmatrix
 # cmatrix  -r -s # matrix banner
 
+export PYTHONWARNINGS="ignore"
 export GIT_SSL_NO_VERIFY=1
 export PATH="$HOME/.local/bin:$PATH"
 export PIP_DISABLE_PIP_VERSION_CHECK=1
