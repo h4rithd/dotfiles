@@ -1,88 +1,134 @@
 " by: h4rithd.com
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-inoremap ii <Esc>       " remap Esc key to dubble i (ii)
-syntax on               " enable syntax processing
-set number              " show line numbers
-set relativenumber      " show relative numbering
-set showcmd             " show command in bottom bar
-set cursorline          " highlight current line
-set incsearch     		" search as characters are entered
-set hlsearch      		" highlight matches
-set ignorecase    		" Ignore case in searches by default
-set smartcase	      	" But make it case sensitive if an uppercase is entered
-set tabstop=4           " number of visual spaces per TAB
-set softtabstop=4       " number of spaces in tab when editing
-set shiftwidth=4        " Insert 4 spaces on a tab
-set expandtab           " tabs are spaces, mainly because of python
-set wildmenu            " visual autocomplete for command menu
-set showmatch           " highlight matching [{()}]
-set laststatus=2        " Show the status line at the bottom
-set mouse+=a            " A necessary evil, mouse support
-set splitbelow          " Open new vertical split bottom
-set splitright          " Open new horizontal splits right
-set linebreak           " Have lines wrap instead of continue off-screen
-set scrolloff=8         " Keep cursor in approximately the middle of the screen
-set updatetime=100      " Some plugins require fast updatetime
-set ttyfast             " Improve redrawing
-set hidden              " Allows having hidden buffers (not displayed in any window)
-set undofile            " Maintain undo history between sessions
-set undodir=~/.vim/undodir
+set nocompatible
+let mapleader=" "
+let maplocalleader=" "
 
-filetype indent on      " load filetype-specific indent files
-filetype plugin on      " load filetype specific plugin files
-
-" Move 1 more lines up or down
-nnoremap K :m .-2<CR>==
-nnoremap J :m .+1<CR>==
-vnoremap K :m '<-2<CR>gv=gv
-vnoremap J :m '>+1<CR>gv=gv
-
-" [-] NERDTree file sidebar
-nnoremap <Leader>e :NERDTreeToggle<CR>
-nnoremap <Leader>f :NERDTreeFind<CR>
-
-let NERDTreeShowHidden=1
-let NERDTreeWinSize=32
-let NERDTreeMinimalUI=1
-let NERDTreeDirArrows=1
-let NERDTreeQuitOnOpen=0
-
-" Close Vim if NERDTree is the last remaining window
-autocmd BufEnter * if winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | quit | endif
-
-" [-] onedark Plugin
-packadd! onedark.vim
-colorscheme onedark
-" [-] vim-mucomplete plugin
-set completeopt+=menuone
-set completeopt+=noselect
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 1
-" [-] highlightedyank plugin
-let g:highlightedyank_highlight_duration = -1
-
-set noerrorbells visualbell t_vb=	" Disable annoying error noises
-set backspace=indent,eol,start		" Make backspace behave in a more intuitive way
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Basic settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+syntax on
+set number
+set relativenumber
+set showcmd
+set cursorline
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set wildmenu
+set showmatch
+set laststatus=2
+set mouse+=a
+set splitbelow
+set splitright
+set linebreak
+set scrolloff=8
+set updatetime=100
+set ttyfast
+set hidden
+set noerrorbells
+set visualbell
+set t_vb=
+set backspace=indent,eol,start
 set colorcolumn=120
 highlight ColorColumn ctermbg=238
 
-let mapleader=" "       " leader is space
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Undo history
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set undofile
+if !isdirectory(expand("~/.vim/undodir"))
+    call mkdir(expand("~/.vim/undodir"), "p")
+endif
+set undodir=~/.vim/undodir
 
-"  - |     --  Split with leader
-nnoremap <Leader>- :sp<CR>
-nnoremap <Leader>\| :vsp<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Filetype support
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+filetype plugin indent on
 
-"  w wq q   --  Quick Save
-nmap <Leader>w :w<CR>
-nmap <Leader>q :q<CR>
-nmap <Leader>wq :wq<CR>
-nmap <Leader>Q :q!<CR>
-
-" Automatically closing braces
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Insert mode mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remap Esc to ii
+inoremap ii <Esc>
+" Automatically closing braces and quotes
 inoremap { {}<Esc>ha
 inoremap ( ()<Esc>ha
 inoremap [ []<Esc>ha
 inoremap " ""<Esc>ha
 inoremap ' ''<Esc>ha
 inoremap ` ``<Esc>ha
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Move lines up/down
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap K :m .-2<CR>==
+nnoremap J :m .+1<CR>==
+vnoremap K :m '<-2<CR>gv=gv
+vnoremap J :m '>+1<CR>gv=gv
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Leader mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Save / quit
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>wq :wq<CR>
+nnoremap <Leader>Q :q!<CR>
+" Splits
+nnoremap <Leader>- :sp<CR>
+nnoremap <Leader>\| :vsp<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NERDTree file sidebar
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Try loading NERDTree if installed as optional package
+silent! packadd! nerdtree
+" <Space>f opens/closes the sidebar
+nnoremap <silent> <Leader>f :NERDTreeToggle<CR>
+" <Space>F finds the current file in the sidebar
+nnoremap <silent> <Leader>F :NERDTreeFind<CR>
+let NERDTreeShowHidden=1
+let NERDTreeWinSize=32
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
+let NERDTreeQuitOnOpen=0
+augroup h4rithd_nerdtree
+    autocmd!
+    autocmd BufEnter * if winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | quit | endif
+augroup END
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" onedark theme
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+silent! packadd! onedark.vim
+try
+    colorscheme onedark
+catch
+    colorscheme default
+endtry
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-mucomplete
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set completeopt+=menuone
+set completeopt+=noselect
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" highlighted yank
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:highlightedyank_highlight_duration = -1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ack/ag search
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ackprg = 'ag --nogroup --nocolor --column'
