@@ -13,3 +13,6 @@ mkdir -p ~/.vim/pack/plugins/start && git clone https://github.com/mg979/vim-vis
 mkdir -p ~/.vim/pack/plugins/start
 git clone https://github.com/preservim/nerdtree.git ~/.vim/pack/plugins/start/nerdtree
 vim -u NONE -c "helptags ~/.vim/pack/plugins/start/nerdtree/doc" -c q
+mkdir -p ~/.vim/pack/plugins/start
+git clone https://github.com/ryanoasis/vim-devicons.git ~/.vim/pack/plugins/start/vim-devicons
+vim -c "helptags ~/.vim/pack/plugins/start/vim-devicons/doc" -c q
