@@ -37,6 +37,19 @@ nnoremap J :m .+1<CR>==
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap J :m '>+1<CR>gv=gv
 
+" [-] NERDTree file sidebar
+nnoremap <Leader>e :NERDTreeToggle<CR>
+nnoremap <Leader>f :NERDTreeFind<CR>
+
+let NERDTreeShowHidden=1
+let NERDTreeWinSize=32
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
+let NERDTreeQuitOnOpen=0
+
+" Close Vim if NERDTree is the last remaining window
+autocmd BufEnter * if winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | quit | endif
+
 " [-] onedark Plugin
 packadd! onedark.vim
 colorscheme onedark
