@@ -85,12 +85,12 @@ nnoremap <Leader>Q :q!<CR>
 " Splits
 nnoremap <Leader>- :sp<CR>
 nnoremap <Leader>\| :vsp<CR>
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" NERDTree file sidebar
+" NERDTree file sidebar + icons
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Try loading NERDTree if installed as optional package
+set encoding=utf-8
 silent! packadd! nerdtree
+silent! packadd! vim-devicons
 " <Space>f opens/closes the sidebar
 nnoremap <silent> <Leader>f :NERDTreeToggle<CR>
 " <Space>F finds the current file in the sidebar
@@ -100,6 +100,11 @@ let NERDTreeWinSize=32
 let NERDTreeMinimalUI=1
 let NERDTreeDirArrows=1
 let NERDTreeQuitOnOpen=0
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_conceal_nerdtree_brackets = 1
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
 augroup h4rithd_nerdtree
     autocmd!
     autocmd BufEnter * if winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree() | quit | endif
