@@ -220,7 +220,7 @@ let g:indentLine_fileTypeExclude = [
 " IMPORTANT:
 " coc.nvim is used as the main autocomplete engine.
 " vim-mucomplete is installed, but not enabled here to avoid conflicts.
-let g:mucomplete#enable_auto_at_startup = 0
+# let g:mucomplete#enable_auto_at_startup = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc.nvim - VSCode-like autocomplete / LSP
