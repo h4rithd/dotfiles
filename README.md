@@ -1,4 +1,3 @@
-````
 # h4rithd Dotfiles
 Personal dotfiles for setting up a new macOS or Linux machine. This repo includes shell, Vim, tmux, and local utility script configuration.
 
