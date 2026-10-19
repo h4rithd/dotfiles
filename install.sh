@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
+# h4rithd dotfiles installer.
+#
+# Usage:
+#   ./install.sh               Dotfiles only: zsh, vim, tmux, ~/.local/bin, vim plugins.
+#                               No fonts, no terminal-app profile changes.
+#   ./install.sh --full        Everything above, plus fonts and the terminal-app
+#                               profile for your OS (iTerm2 + Terminal.app on macOS,
+#                               mate-terminal on Linux).
+#   ./install.sh --with-fonts       Add just the font install to the default run.
+#   ./install.sh --with-terminal    Add just the terminal-app profile to the default run.
+#
+# --full is the same as --with-fonts --with-terminal.
 set -euo pipefail
 
 REPO_URL="https://github.com/h4rithd/dotfiles.git"
@@ -9,36 +21,41 @@ PACK_ROOT="${HOME}/.vim/pack"
 PACK_START="${PACK_ROOT}/plugins/start"
 PACK_OPT="${PACK_ROOT}/plugins/opt"
 
-log() {
-    printf '[+] %s\n' "$*"
+WITH_FONTS=0
+WITH_TERMINAL=0
+
+log()  { printf '[+] %s\n' "$*"; }
+warn() { printf '[!] %s\n' "$*" >&2; }
+die()  { printf '[-] %s\n' "$*" >&2; exit 1; }
+
+usage() {
+    sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
 }
 
-warn() {
-    printf '[!] %s\n' "$*" >&2
-}
-
-die() {
-    printf '[-] %s\n' "$*" >&2
-    exit 1
+parse_args() {
+    for arg in "$@"; do
+        case "$arg" in
+            --full)          WITH_FONTS=1; WITH_TERMINAL=1 ;;
+            --with-fonts)    WITH_FONTS=1 ;;
+            --with-terminal) WITH_TERMINAL=1 ;;
+            --no-fonts)      WITH_FONTS=0 ;;
+            --no-terminal)   WITH_TERMINAL=0 ;;
+            -h|--help)       usage; exit 0 ;;
+            *) die "Unknown option: $arg (see --help)" ;;
+        esac
+    done
 }
 
 detect_os() {
     case "$(uname -s)" in
-        Darwin)
-            echo "mac"
-            ;;
-        Linux)
-            echo "linux"
-            ;;
-        *)
-            echo "unknown"
-            ;;
+        Darwin) echo "mac" ;;
+        Linux)  echo "linux" ;;
+        *)      echo "unknown" ;;
     esac
 }
 
 backup_path() {
     local target="$1"
-
     if [ -e "$target" ] || [ -L "$target" ]; then
         mkdir -p "$BACKUP_DIR"
         log "Backing up $target -> $BACKUP_DIR/"
@@ -57,58 +74,6 @@ install_or_update_repo() {
     fi
 }
 
-install_or_update_plugin_start() {
-    local name="$1"
-    local repo="$2"
-    local branch="${3:-}"
-    local target="${PACK_START}/${name}"
-
-    if [ -d "$target/.git" ]; then
-        log "Updating Vim plugin: $name"
-        git -C "$target" pull --ff-only || true
-        return
-    fi
-
-    if [ -e "$target" ]; then
-        log "Existing non-git plugin path found, backing up: $target"
-        backup_path "$target"
-    fi
-
-    log "Installing Vim plugin: $name"
-
-    if [ -n "$branch" ]; then
-        git clone --depth 1 --branch "$branch" "$repo" "$target"
-    else
-        git clone --depth 1 "$repo" "$target"
-    fi
-}
-
-install_or_update_plugin_opt() {
-    local name="$1"
-    local repo="$2"
-    local branch="${3:-}"
-    local target="${PACK_OPT}/${name}"
-
-    if [ -d "$target/.git" ]; then
-        log "Updating optional Vim plugin: $name"
-        git -C "$target" pull --ff-only || true
-        return
-    fi
-
-    if [ -e "$target" ]; then
-        log "Existing non-git optional plugin path found, backing up: $target"
-        backup_path "$target"
-    fi
-
-    log "Installing optional Vim plugin: $name"
-
-    if [ -n "$branch" ]; then
-        git clone --depth 1 --branch "$branch" "$repo" "$target"
-    else
-        git clone --depth 1 "$repo" "$target"
-    fi
-}
-
 check_requirements() {
     command -v git >/dev/null 2>&1 || die "git is required. Install git first."
     command -v rsync >/dev/null 2>&1 || die "rsync is required. Install rsync first."
@@ -119,10 +84,7 @@ check_requirements() {
     fi
 
     log "Vim version: $(vim --version | head -n 1)"
-
-    if ! vim --version | grep -q '+terminal'; then
-        warn "Your Vim does not have +terminal. vim-floaterm may not work."
-    fi
+    vim --version | grep -q '+terminal' || warn "Your Vim does not have +terminal. vim-floaterm may not work."
 
     if command -v node >/dev/null 2>&1; then
         log "Node.js version: $(node -v)"
@@ -131,85 +93,130 @@ check_requirements() {
     fi
 }
 
-warn_if_repo_files_look_broken() {
-    local file
-    for file in "$REPO_DIR/.vimrc" "$REPO_DIR/.zshrc" "$REPO_DIR/.vim/plug-install.sh"; do
-        if [ -f "$file" ]; then
-            local lines
-            lines="$(wc -l < "$file" | tr -d ' ')"
+install_shared_dotfiles() {
+    log "Installing shared dotfiles"
 
-            if [ "$lines" -lt 10 ]; then
-                warn "$file has only $lines lines. Check that it was committed with real newlines."
-            fi
-        fi
-    done
-}
+    mkdir -p "$HOME/.local" "$HOME/.vim" "$HOME/.vim/undodir"
 
-install_dotfiles() {
-    local os_type="$1"
-
-    log "Installing dotfiles for OS: $os_type"
-
-    mkdir -p "$HOME/.local"
-    mkdir -p "$HOME/.vim"
-    mkdir -p "$HOME/.vim/undodir"
-
-    # Files/directories that will be managed by this script.
     backup_path "$HOME/.vimrc"
-    backup_path "$HOME/.zshrc"
-    backup_path "$HOME/.zshrc-mac"
-    backup_path "$HOME/.tmux.conf"
-    backup_path "$HOME/.cuirlrc"
     backup_path "$HOME/.hushlogin"
+    backup_path "$HOME/.cuirlrc"
     backup_path "$HOME/.local/bin"
-    backup_path "$HOME/iTerm2-profile.json"
 
-    log "Copying common dotfiles"
+    [ -f "$REPO_DIR/shared/.vimrc" ]      && cp "$REPO_DIR/shared/.vimrc" "$HOME/.vimrc"
+    [ -f "$REPO_DIR/shared/.hushlogin" ]  && cp "$REPO_DIR/shared/.hushlogin" "$HOME/.hushlogin"
+    [ -f "$REPO_DIR/shared/.cuirlrc" ]    && cp "$REPO_DIR/shared/.cuirlrc" "$HOME/.cuirlrc"
 
-    [ -f "$REPO_DIR/.vimrc" ] && cp "$REPO_DIR/.vimrc" "$HOME/.vimrc"
-    [ -f "$REPO_DIR/.tmux.conf" ] && cp "$REPO_DIR/.tmux.conf" "$HOME/.tmux.conf"
-    [ -f "$REPO_DIR/.cuirlrc" ] && cp "$REPO_DIR/.cuirlrc" "$HOME/.cuirlrc"
-    [ -f "$REPO_DIR/.hushlogin" ] && cp "$REPO_DIR/.hushlogin" "$HOME/.hushlogin"
-
-    if [ -d "$REPO_DIR/.local/bin" ]; then
-        mkdir -p "$HOME/.local"
-        rsync -a "$REPO_DIR/.local/bin/" "$HOME/.local/bin/"
+    if [ -d "$REPO_DIR/shared/.local/bin" ]; then
+        mkdir -p "$HOME/.local/bin"
+        rsync -a "$REPO_DIR/shared/.local/bin/" "$HOME/.local/bin/"
         find "$HOME/.local/bin" -type f -exec chmod u+x {} \;
     fi
 
-    # Copy .vim but do NOT copy old plugin directories from the repo.
-    # Plugins are installed fresh below.
-    if [ -d "$REPO_DIR/.vim" ]; then
-        rsync -a \
-            --exclude 'pack/' \
-            "$REPO_DIR/.vim/" "$HOME/.vim/"
+    if [ -d "$REPO_DIR/shared/.vim" ]; then
+        rsync -a --exclude 'pack/' "$REPO_DIR/shared/.vim/" "$HOME/.vim/"
+    fi
+}
+
+install_os_dotfiles() {
+    local os_type="$1"
+    local src="$REPO_DIR/$os_type"
+
+    [ -d "$src" ] || die "No $os_type/ directory found in repo at $src"
+
+    log "Installing $os_type-specific dotfiles"
+
+    backup_path "$HOME/.zshrc"
+    backup_path "$HOME/.tmux.conf"
+
+    [ -f "$src/.zshrc" ]      && cp "$src/.zshrc" "$HOME/.zshrc"
+    [ -f "$src/.tmux.conf" ]  && cp "$src/.tmux.conf" "$HOME/.tmux.conf"
+
+    if [ "$os_type" = "mac" ] && [ -f "$src/tmux-status.sh" ]; then
+        mkdir -p "$HOME/.tmux"
+        cp "$src/tmux-status.sh" "$HOME/.tmux/status.sh"
+        chmod +x "$HOME/.tmux/status.sh"
+    fi
+}
+
+install_fonts() {
+    local os_type="$1"
+    local font_src="$REPO_DIR/shared/fonts"
+
+    [ -d "$font_src" ] || { warn "No shared/fonts/ directory in repo. Skipping fonts."; return; }
+
+    local dest
+    if [ "$os_type" = "mac" ]; then
+        dest="$HOME/Library/Fonts"
+    else
+        dest="$HOME/.local/share/fonts"
     fi
 
-    # OS-specific zshrc behavior.
+    log "Installing fonts to $dest"
+    mkdir -p "$dest"
+    find "$font_src" -name '*.ttf' -exec cp {} "$dest/" \;
+
+    if [ "$os_type" = "linux" ] && command -v fc-cache >/dev/null 2>&1; then
+        fc-cache -f "$dest" >/dev/null 2>&1 || true
+    fi
+}
+
+install_terminal_profile() {
+    local os_type="$1"
+
     if [ "$os_type" = "mac" ]; then
-        if [ -f "$REPO_DIR/.zshrc-mac" ]; then
-            log "macOS detected: installing .zshrc-mac as ~/.zshrc"
-            cp "$REPO_DIR/.zshrc-mac" "$HOME/.zshrc"
+        # iTerm2, via its own supported "Dynamic Profiles" mechanism: drop a
+        # profile JSON file in this folder and iTerm2 picks it up live, no
+        # restart, no touching NSUserDefaults directly.
+        if [ -d "/Applications/iTerm.app" ]; then
+            local dp_dir="$HOME/Library/Application Support/iTerm2/DynamicProfiles"
+            mkdir -p "$dp_dir"
+            cp "$REPO_DIR/mac/iTerm2-profile.json" "$dp_dir/h4rithd.json"
+            log "iTerm2 profile installed (Dynamic Profiles). Pick 'h4rithd' in iTerm2 > Settings > Profiles."
         else
-            warn ".zshrc-mac not found. Falling back to repo .zshrc"
-            [ -f "$REPO_DIR/.zshrc" ] && cp "$REPO_DIR/.zshrc" "$HOME/.zshrc"
+            log "iTerm2 not installed, skipping its profile."
         fi
 
-        rm -f "$HOME/.zshrc-mac"
+        # Terminal.app
+        if [ -f "$REPO_DIR/mac/Terminal.app-profile.terminal" ]; then
+            open "$REPO_DIR/mac/Terminal.app-profile.terminal"
+            sleep 1
+            defaults write com.apple.Terminal "Default Window Settings" -string "h4rithd"
+            defaults write com.apple.Terminal "Startup Window Settings" -string "h4rithd"
+            log "Terminal.app profile 'h4rithd' installed and set as default/startup."
+            warn "If Terminal.app was already open, quit and reopen it for the new profile to take effect."
+        fi
     elif [ "$os_type" = "linux" ]; then
-        log "Linux detected: installing repo .zshrc as ~/.zshrc"
-        [ -f "$REPO_DIR/.zshrc" ] && cp "$REPO_DIR/.zshrc" "$HOME/.zshrc"
-
-        rm -f "$HOME/.zshrc-mac"
-    else
-        warn "Unknown OS. Installing repo .zshrc as fallback."
-        [ -f "$REPO_DIR/.zshrc" ] && cp "$REPO_DIR/.zshrc" "$HOME/.zshrc"
-
-        rm -f "$HOME/.zshrc-mac"
+        if [ -f "$REPO_DIR/linux/mate-terminal-defaults.sh" ]; then
+            bash "$REPO_DIR/linux/mate-terminal-defaults.sh" || warn "mate-terminal profile setup failed; continuing."
+        fi
     fi
+}
 
-    # Always ignore/remove iTerm2 profile.
-    rm -f "$HOME/iTerm2-profile.json"
+install_or_update_plugin_start() {
+    local name="$1" repo="$2" branch="${3:-}" target="${PACK_START}/$1"
+    if [ -d "$target/.git" ]; then
+        log "Updating Vim plugin: $name"
+        git -C "$target" pull --ff-only || true
+        return
+    fi
+    [ -e "$target" ] && backup_path "$target"
+    log "Installing Vim plugin: $name"
+    if [ -n "$branch" ]; then git clone --depth 1 --branch "$branch" "$repo" "$target"
+    else git clone --depth 1 "$repo" "$target"; fi
+}
+
+install_or_update_plugin_opt() {
+    local name="$1" repo="$2" branch="${3:-}" target="${PACK_OPT}/$1"
+    if [ -d "$target/.git" ]; then
+        log "Updating optional Vim plugin: $name"
+        git -C "$target" pull --ff-only || true
+        return
+    fi
+    [ -e "$target" ] && backup_path "$target"
+    log "Installing optional Vim plugin: $name"
+    if [ -n "$branch" ]; then git clone --depth 1 --branch "$branch" "$repo" "$target"
+    else git clone --depth 1 "$repo" "$target"; fi
 }
 
 install_vim_plugins() {
@@ -219,66 +226,46 @@ install_vim_plugins() {
     fi
 
     log "Installing Vim plugins"
+    mkdir -p "$PACK_START" "$PACK_OPT"
 
-    mkdir -p "$PACK_START"
-    mkdir -p "$PACK_OPT"
-
-    # Remove old duplicate package roots from your earlier setup.
-    rm -rf "$PACK_ROOT/vendor/start/nerdtree"
-    rm -rf "$PACK_ROOT/vendor/start/vim-matchup"
-    rm -rf "$PACK_ROOT/vendor/start/vim-startify"
-    rm -rf "$PACK_ROOT/bundle/start/vim-mucomplete"
-    rm -rf "$PACK_START/vim-mucomplete"
-
-    install_or_update_plugin_start "lightline.vim"      "https://github.com/itchyny/lightline.vim.git"
-    install_or_update_plugin_start "vim-polyglot"       "https://github.com/sheerun/vim-polyglot.git"
-    install_or_update_plugin_start "nerdtree"           "https://github.com/preservim/nerdtree.git"
-    install_or_update_plugin_start "vim-devicons"       "https://github.com/ryanoasis/vim-devicons.git"
-    install_or_update_plugin_start "vim-matchup"        "https://github.com/andymass/vim-matchup.git"
-    install_or_update_plugin_start "vim-startify"       "https://github.com/mhinz/vim-startify.git"
-    install_or_update_plugin_start "vim-visual-multi"   "https://github.com/mg979/vim-visual-multi.git"
-    install_or_update_plugin_start "vim-fugitive"       "https://github.com/tpope/vim-fugitive.git"
-    install_or_update_plugin_start "vim-floaterm"       "https://github.com/voldikss/vim-floaterm.git"
-    install_or_update_plugin_start "indentLine"         "https://github.com/Yggdroot/indentLine.git"
-    install_or_update_plugin_start "coc.nvim"           "https://github.com/neoclide/coc.nvim.git" "release"
+    install_or_update_plugin_start "lightline.vim"    "https://github.com/itchyny/lightline.vim.git"
+    install_or_update_plugin_start "vim-polyglot"     "https://github.com/sheerun/vim-polyglot.git"
+    install_or_update_plugin_start "nerdtree"         "https://github.com/preservim/nerdtree.git"
+    install_or_update_plugin_start "vim-devicons"     "https://github.com/ryanoasis/vim-devicons.git"
+    install_or_update_plugin_start "vim-matchup"      "https://github.com/andymass/vim-matchup.git"
+    install_or_update_plugin_start "vim-startify"     "https://github.com/mhinz/vim-startify.git"
+    install_or_update_plugin_start "vim-visual-multi" "https://github.com/mg979/vim-visual-multi.git"
+    install_or_update_plugin_start "vim-fugitive"     "https://github.com/tpope/vim-fugitive.git"
+    install_or_update_plugin_start "vim-floaterm"     "https://github.com/voldikss/vim-floaterm.git"
+    install_or_update_plugin_start "indentLine"       "https://github.com/Yggdroot/indentLine.git"
+    install_or_update_plugin_start "coc.nvim"         "https://github.com/neoclide/coc.nvim.git" "release"
 
     install_or_update_plugin_opt "onedark.vim" "https://github.com/joshdick/onedark.vim.git"
 
     log "Generating Vim helptags"
-
     find "$PACK_ROOT" -type d -name doc | while read -r docdir; do
         vim -Nu NONE -n -es -c "helptags $docdir" -c "qa" || true
     done
 }
 
 install_coc_extensions() {
-    if ! command -v vim >/dev/null 2>&1; then
-        return
-    fi
-
+    command -v vim >/dev/null 2>&1 || return
     if ! command -v node >/dev/null 2>&1; then
         warn "Skipping CoC extensions because node is missing."
         return
     fi
-
     log "Trying to install CoC extensions"
-
     vim -Nu "$HOME/.vimrc" -n -es \
         -c "CocInstall -sync coc-json coc-html coc-css coc-yaml coc-pyright coc-tsserver coc-sh" \
         -c "qa" || warn "CoC extension install failed. Run it manually inside Vim."
 }
 
 set_default_shell_to_zsh() {
-    if ! command -v zsh >/dev/null 2>&1; then
-        warn "zsh is not installed. Skipping shell change."
-        return
-    fi
-
+    command -v zsh >/dev/null 2>&1 || { warn "zsh is not installed. Skipping shell change."; return; }
     if [ "${SHELL:-}" = "$(command -v zsh)" ]; then
         log "zsh is already your current shell."
         return
     fi
-
     if command -v chsh >/dev/null 2>&1; then
         warn "To change your default shell, run:"
         echo "    chsh -s $(command -v zsh)"
@@ -286,22 +273,28 @@ set_default_shell_to_zsh() {
 }
 
 main() {
+    parse_args "$@"
+
     local os_type
     os_type="$(detect_os)"
+    [ "$os_type" = "unknown" ] && die "Unsupported OS: $(uname -s)"
+
+    log "Installing dotfiles for OS: $os_type (fonts: $WITH_FONTS, terminal: $WITH_TERMINAL)"
 
     check_requirements
     install_or_update_repo
-    warn_if_repo_files_look_broken
-    install_dotfiles "$os_type"
+    install_shared_dotfiles
+    install_os_dotfiles "$os_type"
+
+    [ "$WITH_FONTS" = 1 ]    && install_fonts "$os_type"
+    [ "$WITH_TERMINAL" = 1 ] && install_terminal_profile "$os_type"
+
     install_vim_plugins
     install_coc_extensions
     set_default_shell_to_zsh
 
     log "Done."
-
-    if [ -d "$BACKUP_DIR" ]; then
-        log "Backup saved at: $BACKUP_DIR"
-    fi
+    [ -d "$BACKUP_DIR" ] && log "Backup saved at: $BACKUP_DIR"
 
     echo
     echo "Next steps:"
